@@ -14,6 +14,7 @@
 		36C80208274E74040099D173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36C80207274E74040099D173 /* Assets.xcassets */; };
 		36C8020B274E74040099D173 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36C80209274E74040099D173 /* LaunchScreen.storyboard */; };
 		36C80213274E77B80099D173 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C80212274E77B80099D173 /* APIKeys.swift */; };
+		36C80218274E7CB80099D173 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 36C80217274E7CB80099D173 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36C80218274E7CB80099D173 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,14 +62,30 @@
 			children = (
 				36C801FE274E74020099D173 /* AppDelegate.swift */,
 				36C80200274E74020099D173 /* SceneDelegate.swift */,
-				36C80202274E74020099D173 /* ViewController.swift */,
+				36C80214274E7BF60099D173 /* Util */,
+				36C80215274E7C840099D173 /* ViewController */,
 				36C80204274E74020099D173 /* Main.storyboard */,
 				36C80207274E74040099D173 /* Assets.xcassets */,
 				36C80209274E74040099D173 /* LaunchScreen.storyboard */,
 				36C8020C274E74040099D173 /* Info.plist */,
-				36C80212274E77B80099D173 /* APIKeys.swift */,
 			);
 			path = UnsplashCloneCode;
+			sourceTree = "<group>";
+		};
+		36C80214274E7BF60099D173 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				36C80212274E77B80099D173 /* APIKeys.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		36C80215274E7C840099D173 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				36C80202274E74020099D173 /* ViewController.swift */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,6 +104,9 @@
 			dependencies = (
 			);
 			name = UnsplashCloneCode;
+			packageProductDependencies = (
+				36C80217274E7CB80099D173 /* SnapKit */,
+			);
 			productName = UnsplashCloneCode;
 			productReference = 36C801FB274E74020099D173 /* UnsplashCloneCode.app */;
 			productType = "com.apple.product-type.application";
@@ -114,6 +135,9 @@
 				Base,
 			);
 			mainGroup = 36C801F2274E74010099D173;
+			packageReferences = (
+				36C80216274E7CB80099D173 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 36C801FC274E74020099D173 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -366,6 +390,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		36C80216274E7CB80099D173 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36C80217274E7CB80099D173 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C80216274E7CB80099D173 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 36C801F3274E74010099D173 /* Project object */;
 }
