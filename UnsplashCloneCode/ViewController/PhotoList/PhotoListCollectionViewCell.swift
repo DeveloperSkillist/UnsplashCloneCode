@@ -15,12 +15,13 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
     private lazy var photoImageView: DownloadableImageView = {
         let imageView = DownloadableImageView(frame: .zero)
         imageView.backgroundColor = .black
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
     private lazy var photographerLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         label.textColor = .white
         label.shadowColor = .black
         label.layer.shadowOpacity = 0.1
@@ -53,5 +54,4 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
         
         photoImageView.downloadImage(url: photo.urls.regular)
     }
-    
 }

@@ -37,8 +37,6 @@ class DownloadableImageView: UIImageView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        print("init imageView")
         [
             loadingView,
             textView
@@ -62,6 +60,12 @@ class DownloadableImageView: UIImageView {
     func downloadImage(url: String) {
         isCancel = false
         isFail = false
+        
+        if let image = ImageCache.shared.object(forKey: url as NSString) {
+            self.image = image
+            return
+        }
+        
         guard let url = URL(string: url) else {
             self.isFail = true
             return
@@ -82,6 +86,8 @@ class DownloadableImageView: UIImageView {
                       self.isFail = true
                       return
                   }
+            
+            ImageCache.shared.setObject(image, forKey: url.absoluteString as NSString)
             
             if self.isCancel {
                 return

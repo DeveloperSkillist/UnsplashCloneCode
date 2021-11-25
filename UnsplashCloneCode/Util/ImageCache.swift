@@ -1,5 +1,5 @@
 //
-//  UIImageView+Extension.swift
+//  ImageCache.swift
 //  UnsplashCloneCode
 //
 //  Created by skillist on 2021/11/25.
@@ -8,6 +8,6 @@
 import Foundation
 import UIKit
 
-extension UIImageView {
-    
+class ImageCache {
+    static let shared = NSCache<NSString, UIImage>()
 }
