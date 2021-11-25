@@ -11,6 +11,12 @@ import SnapKit
 class DownloadableImageView: UIImageView {
     
     var isCancel: Bool = false
+    private var isFail: Bool = false {
+        willSet {
+            textView.isHidden = !newValue
+            loadingView.stopAnimating()
+        }
+    }
     
     private lazy var loadingView: UIActivityIndicatorView = {
         let loadingView = UIActivityIndicatorView()
@@ -55,8 +61,9 @@ class DownloadableImageView: UIImageView {
     
     func downloadImage(url: String) {
         isCancel = false
+        isFail = false
         guard let url = URL(string: url) else {
-            self.textView.isHidden = true
+            self.isFail = true
             return
         }
         
@@ -72,7 +79,7 @@ class DownloadableImageView: UIImageView {
                   let data = data,
                   let image = UIImage(data: data) else {
                       print("imageDownload error1")
-                      self.textView.isHidden = true
+                      self.isFail = true
                       return
                   }
             
