@@ -146,8 +146,9 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     //collectionView의 item 사이즈 구현
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let photo = photos[indexPath.row]
-        let cellHeight = CGFloat(photo.height) * view.frame.width / CGFloat(photo.width)
-        return CGSize(width: collectionView.frame.width, height: cellHeight)
+        let cellWidth = collectionView.frame.width
+        let cellHeight = photo.imageRatio * cellWidth
+        return CGSize(width: cellWidth, height: cellHeight)
     }
     
     //여백 설정

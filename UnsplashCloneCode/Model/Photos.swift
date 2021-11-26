@@ -4,7 +4,8 @@
 //
 //  Created by skillist on 2021/11/25.
 
-import Foundation
+import UIKit
+
 public struct Photo: Decodable {
 
     public let identifier: String
@@ -16,6 +17,10 @@ public struct Photo: Decodable {
     public let links: LinkKind
     public let likesCount: Int
     public let sponsorship: Sponsorship?
+    
+    var imageRatio: CGFloat {
+        return CGFloat(height) / CGFloat(width)
+    }
 
     private enum CodingKeys: String, CodingKey {
         case identifier = "id"

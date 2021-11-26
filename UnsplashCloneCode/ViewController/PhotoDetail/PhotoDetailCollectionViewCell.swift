@@ -31,7 +31,7 @@ extension PhotoDetailCollectionViewCell {
             return
         }
         
-        let cellHeight = CGFloat(photo.height) * contentView.frame.width / CGFloat(photo.width)
+        let cellHeight = photo.imageRatio * contentView.frame.width
         imageView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.centerX.equalToSuperview()

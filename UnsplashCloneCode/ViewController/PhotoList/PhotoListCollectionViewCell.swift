@@ -10,7 +10,6 @@ import SnapKit
 
 class PhotoListCollectionViewCell: UICollectionViewCell {
     var photo: Photo?
-    var cellHeight: CGFloat = 0
     
     //다운로드 이미지
     private lazy var photoImageView: DownloadableImageView = {
@@ -51,9 +50,6 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
         }
         
         photographerLabel.text = photo.user.name
-        
-        cellHeight = CGFloat(photo.height) * contentView.frame.width / CGFloat(photo.width)
-        
         photoImageView.downloadImage(url: photo.urls.regular)
     }
 }
