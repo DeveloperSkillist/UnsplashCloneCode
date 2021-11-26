@@ -8,3 +8,10 @@
 
 "image_load_fail" = "Unable to load image";
 "unsplash_share_title" = "UnSplash Share";
+"ok" = "OK";
+"error" = "Error";
+"error_network_message" = "
+There is a network problem.\nPlease try again later.";
+"error_json_parsing" = "Data conversion failed.\nPlease try again later.";
+"error_data" = "There is a data problem.\nPlease contact the person in charge.";
+"error_etc" = "An unknown error has occurred.\nPlease try again later.";

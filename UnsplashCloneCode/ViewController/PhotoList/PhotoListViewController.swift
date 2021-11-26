@@ -46,7 +46,6 @@ class PhotoListViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         collectionView.snp.makeConstraints {
-//            $0.edges.equalTo(view.safeAreaLayoutGuide)
             $0.edges.equalToSuperview()
         }
     }
@@ -56,8 +55,9 @@ class PhotoListViewController: UIViewController {
             guard error == nil,
                   let response = response as? HTTPURLResponse,
                   let data = data else {
-                      //TODO: error
-                      print("fetchPhotos error ")
+                      DispatchQueue.main.async {
+                          self?.showErrorAlert(error: .networkError)
+                      }
                       return
                   }
             
@@ -79,13 +79,15 @@ class PhotoListViewController: UIViewController {
                         self?.collectionView.reloadData()
                     }
                 } catch {
-                    //TODO: error
-                    print("json parsing error \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        self?.showErrorAlert(error: .jsonParsingError)
+                    }
                 }
                 
             default:
-                //TODO: error
-                print("network error")
+                DispatchQueue.main.async {
+                    self?.showErrorAlert(error: .networkError)
+                }
                 return
             }
         }
@@ -136,8 +138,6 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
     }
-    
-    
 }
 
 extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
