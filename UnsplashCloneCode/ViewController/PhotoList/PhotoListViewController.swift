@@ -14,7 +14,7 @@ class PhotoListViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 2
+        layout.minimumLineSpacing = 1
         layout.minimumInteritemSpacing = 0
         layout.invalidateLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -136,7 +136,7 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
+        return UIEdgeInsets(top: 0.5, left: 0, bottom: 0.5, right: 0)
     }
 }
 
