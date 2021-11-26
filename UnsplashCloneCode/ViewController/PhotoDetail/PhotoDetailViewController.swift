@@ -18,32 +18,10 @@ class PhotoDetailViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let uiLabel = UILabel()
-        uiLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        uiLabel.font = .systemFont(ofSize: 25, weight: .bold)
         uiLabel.textColor = .white
+        uiLabel.textAlignment = .center
         return uiLabel
-    }()
-    
-    private lazy var dateLabel: UILabel = {
-        let uiLabel = UILabel()
-        uiLabel.font = .systemFont(ofSize: 15)
-        uiLabel.textColor = .white
-        return uiLabel
-    }()
-    
-    private lazy var topInfoStackView: UIStackView = {
-        let stackView = UIStackView()
-        [
-            titleLabel,
-            dateLabel
-        ].forEach {
-            stackView.addArrangedSubview($0)
-        }
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = 5
-        
-        return stackView
     }()
     
     private lazy var cancelButton: UIButton = {
@@ -161,22 +139,24 @@ class PhotoDetailViewController: UIViewController {
         [
             cancelButton,
             shareButton,
-            topInfoStackView
+            titleLabel
         ].forEach {
             topInfoView.addSubview($0)
         }
         
         cancelButton.snp.makeConstraints {
             $0.leading.equalTo(topInfoView).inset(20)
-            $0.centerY.equalTo(topInfoStackView)
+            $0.centerY.equalTo(titleLabel)
+            $0.width.height.equalTo(20)
         }
         
         shareButton.snp.makeConstraints {
             $0.trailing.bottom.equalTo(topInfoView).inset(20)
-            $0.centerY.equalTo(topInfoStackView)
+            $0.centerY.equalTo(titleLabel)
+            $0.width.height.equalTo(20)
         }
         
-        topInfoStackView.snp.makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalTo(cancelButton.snp.trailing).offset(10)
             $0.trailing.equalTo(shareButton.snp.leading).offset(-10)
@@ -184,7 +164,6 @@ class PhotoDetailViewController: UIViewController {
         }
         
         titleLabel.text = photos[startRow].user.name
-        dateLabel.text = "2021.11.25"
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         collectionView.scrollToItem(at: IndexPath(row: startRow, section: 0), at: .centeredHorizontally, animated: false)
