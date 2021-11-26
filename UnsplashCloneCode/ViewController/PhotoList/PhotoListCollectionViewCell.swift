@@ -24,7 +24,8 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 20, weight: .bold)
         label.textColor = .white
         label.shadowColor = .black
-        label.layer.shadowOpacity = 0.1
+        label.layer.shadowOpacity = 0.8
+        label.layer.shadowRadius = 10
         return label
     }()
     
