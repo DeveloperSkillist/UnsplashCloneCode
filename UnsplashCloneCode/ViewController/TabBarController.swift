@@ -12,6 +12,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //TabBar의 아이템 설정
         let photoListViewController = PhotoListViewController()
         photoListViewController.tabBarItem = UITabBarItem(
             title: "Photos",

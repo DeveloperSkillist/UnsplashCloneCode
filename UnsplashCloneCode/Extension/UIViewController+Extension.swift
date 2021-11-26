@@ -8,8 +8,9 @@
 import UIKit
 
 extension UIViewController {
+    
+    //에러 발생 시, 사용자에게 보여줄 alert 구현
     func showErrorAlert(error: Errors) {
-        
         var errorMessage = "error_etc"
         switch error {
         case .networkError:

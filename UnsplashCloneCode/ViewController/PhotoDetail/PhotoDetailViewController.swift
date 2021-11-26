@@ -9,6 +9,7 @@ import UIKit
 
 class PhotoDetailViewController: UIViewController {
     
+    //PhotoListViewController의 목록 위치 변경
     weak var cellChangeDelegate: CellChangeDelegate?
     private lazy var topInfoView: UIView = {
         let topInfoView = UIView()
@@ -59,7 +60,9 @@ class PhotoDetailViewController: UIViewController {
     
     var photos: [Photo] = []
     var startRow = 0
-    var isFullscreen = false {
+    
+    //fullScreen여부에 따라 일부 view hide or show
+    private var isFullscreen = false {
         willSet {
             if !newValue {
                 topInfoView.isHidden = newValue
@@ -76,12 +79,14 @@ class PhotoDetailViewController: UIViewController {
             }
         }
         
-        didSet {
+        didSet {    //상단바와 하단 홈바 hide or show
             self.setNeedsStatusBarAppearanceUpdate()
             self.setNeedsUpdateOfHomeIndicatorAutoHidden()
         }
     }
-    var isVCDismissing: Bool = false {
+    
+    //VC를 pullDown하여 VC 종료 중 일부 view hide or show
+    private var isVCDismissing: Bool = false {
         willSet {
             if newValue {
                 topInfoView.isHidden = true
@@ -94,7 +99,8 @@ class PhotoDetailViewController: UIViewController {
             }
         }
     }
-    var viewPullDownY: CGFloat = 0
+    //pullDown에 대한 Y위치를 저장
+    private var viewPullDownY: CGFloat = 0
     
     @objc func dismissDetailView() {
         self.dismiss(animated: false, completion: nil)
@@ -166,6 +172,8 @@ class PhotoDetailViewController: UIViewController {
         titleLabel.text = photos[startRow].user.name
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
+        
+        //PhotoListViewController에서 선택한 아이템을 보여주기
         collectionView.scrollToItem(at: IndexPath(row: startRow, section: 0), at: .centeredHorizontally, animated: false)
     }
     
@@ -196,12 +204,14 @@ extension PhotoDetailViewController: UICollectionViewDataSource {
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        //사진을 변경(스크롤이 끝나면)한 경우 현재 row를 가져와 상단의 사진 정보 변경
         let row = currentItemRow
         titleLabel.text = photos[row].user.name
         cellChangeDelegate?.changedCell(row: row)
     }
     
     var currentItemRow: Int {
+        //현재 row 계산하기
         return Int(collectionView.contentOffset.x / collectionView.frame.size.width)
     }
 }
@@ -219,26 +229,32 @@ extension PhotoDetailViewController: UICollectionViewDelegateFlowLayout {
 //MARK: Gesture
 extension PhotoDetailViewController {
     func setupGesture() {
+        //fullScreen toggle 제스처 등록
         let fullscreenGesture = UITapGestureRecognizer(target: self, action: #selector(toggleFullScreen))
         self.view.addGestureRecognizer(fullscreenGesture)
         
+        //VC PullDown 제스처 등록
         let pullDownGesture = UIPanGestureRecognizer(target: self, action: #selector(pullDownDismissGesture(sender:)))
         self.view.addGestureRecognizer(pullDownGesture)
     }
     
+    //fullScreen toggle 제스처
     @objc func toggleFullScreen() {
         isFullscreen.toggle()
     }
     
+    //VC PullDown 제스처
     @objc func pullDownDismissGesture(sender: UIPanGestureRecognizer) {
         switch sender.state {
+            
+        //제스처가 변경중인 경우
         case .changed:
             viewPullDownY = sender.translation(in: view).y
-            if viewPullDownY < 0 {
+            if viewPullDownY < 0 {  //VC를 위로 올릴 경우, dismiss 수행을 하지 않기 위해서 break
                 break
             }
 
-            isVCDismissing = true
+            isVCDismissing = true   //PullDown 진행중인 경우 일부 view hide
             UIView.animate(
                 withDuration: 0.5,
                 delay: 0,
@@ -247,16 +263,19 @@ extension PhotoDetailViewController {
                 options: .curveEaseOut,
                 animations: {
                     self.view.transform = CGAffineTransform(translationX: 0, y: self.viewPullDownY)
-                    self.view.alpha = 1 - (self.viewPullDownY / (self.view.bounds.height * 0.7))
+                    self.view.alpha = 1 - (self.viewPullDownY / (self.view.bounds.height * 0.7))    //alpha  변경
                 }
             )
 
+        //제스처가 끝난 경우
         case .ended:
+            //pullDown의 위치를 확인하여, 일정 이동한 경우 dismiss 수행
             if viewPullDownY >= 200 {
-                dismiss(animated: true, completion: nil)
+                dismiss(animated: true)
                 break
             }
 
+            //dismiss를 수행하지 않을 경우, alpha 변경 및 일부 view show
             isVCDismissing = false
             UIView.animate(
                 withDuration: 0.5,

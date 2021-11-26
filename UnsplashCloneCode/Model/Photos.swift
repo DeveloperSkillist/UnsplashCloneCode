@@ -17,7 +17,6 @@ public struct Photo: Decodable {
     public let likesCount: Int
     public let sponsorship: Sponsorship?
 
-
     private enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case height

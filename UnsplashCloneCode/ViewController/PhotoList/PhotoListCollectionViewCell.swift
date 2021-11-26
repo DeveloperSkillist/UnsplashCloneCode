@@ -12,6 +12,7 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
     var photo: Photo?
     var cellHeight: CGFloat = 0
     
+    //다운로드 이미지
     private lazy var photoImageView: DownloadableImageView = {
         let imageView = DownloadableImageView(frame: .zero)
         imageView.backgroundColor = .black
@@ -28,6 +29,7 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    //cell reuse할 때, 다운로드 중인 이미지 적용 취소하기
     override func prepareForReuse() {
         photoImageView.isCancel = true
     }
