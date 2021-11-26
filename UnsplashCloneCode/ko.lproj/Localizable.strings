@@ -5,3 +5,6 @@
   Created by skillist on 2021/11/26.
   
 */
+
+"image_load_fail" = "이미지를 불러올 수 없습니다.";
+"unsplash_share_title" = "UnSplash 공유";

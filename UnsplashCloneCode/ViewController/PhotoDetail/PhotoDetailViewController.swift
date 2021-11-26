@@ -124,7 +124,7 @@ class PhotoDetailViewController: UIViewController {
     
     @objc func sharePhoto() {
         var shareObjects: [Any] = []
-        shareObjects.append("UnSplash Share")
+        shareObjects.append("unsplash_share_title".localized)
         shareObjects.append(photos[currentItemRow].links.html)
         
         let activityViewController = UIActivityViewController(activityItems: shareObjects, applicationActivities: nil)

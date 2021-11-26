@@ -152,7 +152,6 @@ extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
         
         let row = firstIndexPath.row
         if row == photos.count - 11 || row == photos.count - 6 || row == photos.count - 1 {
-            print("fetch Next Page \(row)")
             fetchPhotos()
         }
     }

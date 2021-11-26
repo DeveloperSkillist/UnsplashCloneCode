@@ -27,7 +27,7 @@ class DownloadableImageView: UIImageView {
     
     private lazy var textView: UILabel = {
         let textView = UILabel()
-        textView.text = "이미지를 불러올 수 없습니다."
+        textView.text = "image_load_fail".localized
         textView.font = .systemFont(ofSize: 14, weight: .bold)
         textView.textColor = .white
         textView.textAlignment = .center
