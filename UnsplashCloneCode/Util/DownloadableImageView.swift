@@ -54,7 +54,23 @@ class DownloadableImageView: UIImageView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        
+        [
+            loadingView,
+            textView
+        ].forEach {
+            self.addSubview($0)
+        }
+        
+        loadingView.snp.makeConstraints {
+            $0.centerX.centerY.equalToSuperview()
+        }
+        
+        textView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(10)
+        }
+//        fatalError("init(coder:) has not been implemented")
     }
     
     func downloadImage(url: String) {

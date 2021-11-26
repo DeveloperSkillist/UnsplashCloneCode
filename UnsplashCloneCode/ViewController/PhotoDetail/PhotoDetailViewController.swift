@@ -179,7 +179,6 @@ class PhotoDetailViewController: UIViewController {
         titleLabel.text = photos[startRow].user.name
         dateLabel.text = "2021.11.25"
         collectionView.reloadData()
-        print("startRow: \(startRow)")
         collectionView.layoutIfNeeded()
         collectionView.scrollToItem(at: IndexPath(row: startRow, section: 0), at: .centeredHorizontally, animated: false)
     }

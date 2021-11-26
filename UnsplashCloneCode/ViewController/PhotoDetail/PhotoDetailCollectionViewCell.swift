@@ -35,11 +35,9 @@ extension PhotoDetailCollectionViewCell {
         imageView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(6.5)
             $0.height.equalTo(cellHeight)
         }
         imageView.downloadImage(url: photo.urls.regular)
-        print("cell height : \(cellHeight)")
-//        backgroundColor = .yellow
     }
 }

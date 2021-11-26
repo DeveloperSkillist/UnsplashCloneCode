@@ -14,16 +14,15 @@ class PhotoListViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-//        layout.sectionInset = UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.minimumLineSpacing = 0
-        
+        layout.minimumLineSpacing = 2
+        layout.minimumInteritemSpacing = 0
+        layout.invalidateLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
         collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: "PhotoListCollectionViewCell")
-        
+    
         let refreshController = UIRefreshControl()
         refreshController.addTarget(self, action: #selector(refreshPhotos), for: .valueChanged)
         collectionView.refreshControl = refreshController
@@ -47,6 +46,7 @@ class PhotoListViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         collectionView.snp.makeConstraints {
+//            $0.edges.equalTo(view.safeAreaLayoutGuide)
             $0.edges.equalToSuperview()
         }
     }
@@ -107,47 +107,7 @@ extension PhotoListViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        UIView.animate(withDuration: 1, delay: 1, options: .autoreverse, animations: {
-//            collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
-//        }) { [weak self] success in
-//            //TODO : show detail Page
-//            let detailVC = PhotoDetailViewController()
-//            detailVC.photos = self?.photos ?? []
-//            detailVC.startRow = indexPath.row
-//            detailVC.modalPresentationStyle = .overFullScreen
-//            self?.present(detailVC, animated: false, completion: nil)
-//        }
-        
-//        UIView.animate(withDuration: 01, animations: {
-//            collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
-//        }) { [weak self] success in
-//            //TODO : show detail Page
-//            let detailVC = PhotoDetailViewController()
-//            detailVC.photos = self?.photos ?? []
-//            detailVC.startRow = indexPath.row
-//            detailVC.modalPresentationStyle = .overFullScreen
-//            self?.present(detailVC, animated: false, completion: nil)
-//        }
-        
         collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
-//        collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
-//        collectionView.setContentOffset(CGPoint(x: 0, y: 100), animated: false)
-        
-//        UIView.animate(
-//            withDuration: 0.5,
-//            delay: 0,
-//            usingSpringWithDamping: 0.7,
-//            initialSpringVelocity: 1,
-//            options: .curveEaseOut,
-//            animations: {
-//                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoListCollectionViewCell", for: indexPath) as? PhotoListCollectionViewCell else {
-//                    return
-//                }
-//
-//                cell.transform = CGAffineTransform(translationX: 0, y: 100)
-////                self.view.alpha = 1 - (self.viewPullDownY / (self.view.bounds.height * 0.7))
-//            }
-//        )
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             let detailVC = PhotoDetailViewController()
@@ -157,8 +117,6 @@ extension PhotoListViewController: UICollectionViewDataSource {
             detailVC.cellChangeDelegate = self
             self?.present(detailVC, animated: false, completion: nil)
         }
-        
-        
     }
 }
 
@@ -176,14 +134,9 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: collectionView.frame.width, height: cellHeight)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return 0
-//    }
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-////        return UIEdgeInsets(top: 2, left: 0, bottom: 2, right: 0)
-//        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 1, left: 0, bottom: 1, right: 0)
+    }
     
     
 }
