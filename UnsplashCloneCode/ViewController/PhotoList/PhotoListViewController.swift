@@ -130,7 +130,6 @@ extension PhotoListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let photo = photos[indexPath.row]
         let cellHeight = CGFloat(photo.height) * view.frame.width / CGFloat(photo.width)
-        print("row height : \(indexPath.row), \(cellHeight)")
         return CGSize(width: collectionView.frame.width, height: cellHeight)
     }
     

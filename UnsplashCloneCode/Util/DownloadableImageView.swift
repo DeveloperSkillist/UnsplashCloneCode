@@ -70,7 +70,6 @@ class DownloadableImageView: UIImageView {
         textView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(10)
         }
-//        fatalError("init(coder:) has not been implemented")
     }
     
     func downloadImage(url: String) {
