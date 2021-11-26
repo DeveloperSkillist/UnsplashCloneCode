@@ -57,6 +57,7 @@ class PhotoDetailViewController: UIViewController {
     private lazy var shareButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        button.addTarget(self, action: #selector(sharePhoto), for: .touchUpInside)
         button.tintColor = .white
         return button
     }()
@@ -108,14 +109,10 @@ class PhotoDetailViewController: UIViewController {
                 topInfoView.isHidden = true
                 topInfoView.isHidden = true
                 view.backgroundColor = .clear
-//                collectionView.backgroundColor = .clear
-//                collectionView.backgroundColor = .red
-//                self.backgroundView.backgroundColor = .clear
             } else {
                 topInfoView.isHidden = isFullscreen
                 topInfoView.isHidden = isFullscreen
                 view.backgroundColor = .black
-//                self.backgroundView.backgroundColor = .black
             }
         }
     }
@@ -123,6 +120,16 @@ class PhotoDetailViewController: UIViewController {
     
     @objc func dismissDetailView() {
         self.dismiss(animated: false, completion: nil)
+    }
+    
+    @objc func sharePhoto() {
+        var shareObjects: [Any] = []
+        shareObjects.append("UnSplash Share")
+        shareObjects.append(photos[currentItemRow].links.html)
+        
+        let activityViewController = UIActivityViewController(activityItems: shareObjects, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -186,10 +193,6 @@ class PhotoDetailViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return .lightContent
-//    }
     
     override var prefersStatusBarHidden: Bool {
         return isFullscreen
