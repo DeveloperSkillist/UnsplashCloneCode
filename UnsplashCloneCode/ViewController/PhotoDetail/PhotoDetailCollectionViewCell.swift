@@ -35,8 +35,8 @@ extension PhotoDetailCollectionViewCell {
         imageView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.centerX.equalToSuperview()
-            //BUG: PhotoListViewController와 PhotoDetailViewController의 사진 vertical center가 일치하지 않아, offset 6.5 설정
-            $0.centerY.equalToSuperview().offset(6.5)
+            //BUG: PhotoListViewController와 PhotoDetailViewController의 사진 vertical center가 일치하지 않아, offset 설정
+            $0.centerY.equalToSuperview().offset(-18)
             $0.height.equalTo(cellHeight)
         }
         imageView.downloadImage(url: photo.urls.regular)

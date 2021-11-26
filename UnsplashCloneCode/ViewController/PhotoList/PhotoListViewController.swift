@@ -105,6 +105,29 @@ class PhotoListViewController: UIViewController {
             }
         }
     }
+    
+    //scroll 시 tabbar show or hide 구현
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        UIView.animate(withDuration: 0.3, animations: { [weak self] in
+            let velocityY = velocity.y
+            guard velocityY != 0 else {
+                return
+            }
+            
+            var tabbarHeight: CGFloat = UIScreen.main.bounds.maxY
+            var tabBarAlpha: CGFloat = 0
+            if velocityY < 0 { //최상단의 사진을 향해 스크롤 중
+                tabbarHeight -= self?.tabBarController?.tabBar.frame.height ?? 0
+                tabBarAlpha = 1
+            }
+            
+            self?.tabBarController?.tabBar.alpha = tabBarAlpha
+            self?.tabBarController?.tabBar.frame.origin = CGPoint(x: 0, y: tabbarHeight)
+            
+            print("miny \(UIScreen.main.bounds.minY)")
+            print("maxy \(UIScreen.main.bounds.maxY)")
+        })
+    }
 }
 
 extension PhotoListViewController: UICollectionViewDataSource {
