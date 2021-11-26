@@ -10,8 +10,7 @@ import UIKit
 extension UIViewController {
     func showErrorAlert(error: Errors) {
         
-        var errorMessage = ""
-        
+        var errorMessage = "error_etc"
         switch error {
         case .networkError:
             errorMessage = "error_network_message".localized
@@ -20,7 +19,7 @@ extension UIViewController {
         case .dataError:
             errorMessage = "error_data".localized
         case .etc:
-            errorMessage = "error_etc".localized
+            break
         }
         
         let errorTitle = "error".localized
