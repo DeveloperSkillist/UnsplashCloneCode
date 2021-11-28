@@ -147,10 +147,18 @@
 		36A11DCE2753944E00D04C52 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				36A11DCF2753947600D04C52 /* SearchMainViewController.swift */,
+				36A11DD32753978A00D04C52 /* SearchMain */,
 				36A11DD12753955900D04C52 /* SearchNavigationViewController.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		36A11DD32753978A00D04C52 /* SearchMain */ = {
+			isa = PBXGroup;
+			children = (
+				36A11DCF2753947600D04C52 /* SearchMainViewController.swift */,
+			);
+			path = SearchMain;
 			sourceTree = "<group>";
 		};
 		36C801F2274E74010099D173 = {
