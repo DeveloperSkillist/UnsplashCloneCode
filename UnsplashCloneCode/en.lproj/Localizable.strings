@@ -15,3 +15,22 @@ There is a network problem.\nPlease try again later.";
 "error_json_parsing" = "Data conversion failed.\nPlease try again later.";
 "error_data" = "There is a data problem.\nPlease contact the person in charge.";
 "error_etc" = "An unknown error has occurred.\nPlease try again later.";
+
+"input_error_message" = "Please, Check your input Value.";
+
+//LoginViewController
+"login_title" = "Log In";
+"find_password_title" = "Forgot your password?";
+"join_title" = "Don't have an account? Join";
+
+"login_result_title" = "Login result";
+"login_result_message" = "Login success.";
+
+//ResetPasswordViewController
+"reset_title" = "Reset result";
+"reset_message" = "The reset password has been sent to your email address. Try logging in.";
+
+//JoinViewController
+"join_title" = "By joining, you agree to the Terms and Privacy Policy.";
+"join_result" = "Join result";
+"join_success" = "Join success. welcome!";

@@ -14,3 +14,22 @@
 "error_json_parsing" = "데이터 변환에 실패하였습니다.\n잠시후 다시 시도해주세요.";
 "error_data" = "데이터에 문제가 있습니다.\n담당자에 연락해주세요.";
 "error_etc" = "알 수 없는 에러가 발생했습니다.\n잠시후 다시 시도해주세요.";
+
+"input_error_message" = "입력한 값을 확인하세요.";
+
+//LoginViewController
+"login_title" = "로그인 하기";
+"find_password_title" = "비밀번호를 잊어버렸어요? 비밀번호 찾기.";
+"join_title" = "아이디가 없어요? 가입하기.";
+
+"login_result_title" = "로그인 결과";
+"login_result_message" = "로그인에 성공했어요.";
+
+//ResetPasswordViewController
+"reset_title" = "패스워드 초기화 결과";
+"reset_message" = "초기화한 패스워드를 이메일 주소로 보냈습니다. 로그인을 시도하세요.";
+
+//JoinViewController
+"join_title" = "가입 시, 약관 및 개인정보 정책에 동의하는것으로 간주합니다.";
+"join_result" = "가입 결과";
+"join_success" = "환영합니다! 가입에 성공했습니다.";

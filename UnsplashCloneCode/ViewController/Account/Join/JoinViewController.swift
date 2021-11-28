@@ -86,39 +86,41 @@ class JoinViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 13)
         label.textColor = .lightGray
-        label.text = "By joining, you agree to the Terms and Privacy Policy."
+        label.text = "join_title".localized
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
     }()
     
     @objc func trySignUp() {
-        let title = "가입 결과"
-        var message = "가입에 성공했습니다. 환영합니다."
+        view.endEditing(true)
+        
+        let title = "join_result".localized
+        var message = "join_success".localized
         
         if firstNameTextField.text?.isEmpty ?? true {
             firstNameTextField.setError()
-            message = "누락된 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         if lastNameTextField.text?.isEmpty ?? true {
             lastNameTextField.setError()
-            message = "누락된 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         if userNameTextField.text?.isEmpty ?? true {
             userNameTextField.setError()
-            message = "누락된 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         if emailTextField.text?.isEmpty ?? true {
             emailTextField.setError()
-            message = "누락된 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         if passwordTextField.text?.isEmpty ?? true {
             passwordTextField.setError()
-            message = "누락된 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         let loginResultAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)

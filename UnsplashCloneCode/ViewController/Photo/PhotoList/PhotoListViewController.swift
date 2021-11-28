@@ -64,7 +64,7 @@ class PhotoListViewController: UIViewController {
                   let response = response as? HTTPURLResponse,
                   let data = data else {
                       DispatchQueue.main.async {    //에러 발생 시 에러 보여주기
-                          self?.showErrorAlert(error: .networkError)
+                          self?.showNetworkErrorAlert(error: .networkError)
                       }
                       return
                   }
@@ -94,13 +94,13 @@ class PhotoListViewController: UIViewController {
                     }
                 } catch {
                     DispatchQueue.main.async {  //에러 발생 시 에러 보여주기
-                        self?.showErrorAlert(error: .jsonParsingError)
+                        self?.showNetworkErrorAlert(error: .jsonParsingError)
                     }
                 }
                 
             default:
                 DispatchQueue.main.async {  //에러 발생 시 에러 보여주기
-                    self?.showErrorAlert(error: .networkError)
+                    self?.showNetworkErrorAlert(error: .networkError)
                 }
                 return
             }

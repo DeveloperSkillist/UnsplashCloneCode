@@ -35,12 +35,14 @@ class ResetPasswordViewController: UIViewController {
     }()
     
     @objc func resetPassword() {
-        let title = "리셋 결과"
-        var message = "이메일 주소로 리셋한 password를 보냈습니다. 로그인을 시도하세요."
+        view.endEditing(true)
+        
+        let title = "reset_title".localized
+        var message = "reset_message".localized
         
         if emailTextField.text?.isEmpty ?? true {
             emailTextField.setError()
-            message = "누락된 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         let loginResultAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)

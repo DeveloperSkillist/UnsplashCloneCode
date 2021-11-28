@@ -41,7 +41,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
-        button.setTitle("Log In", for: .normal)
+        button.setTitle("login_title".localized, for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(tryLogin), for: .touchUpInside)
@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
     
     private lazy var forgotPasswordButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Forgot your password?", for: .normal)
+        button.setTitle("find_password_title".localized, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(moveForgotVC), for: .touchUpInside)
@@ -59,7 +59,7 @@ class LoginViewController: UIViewController {
     
     private lazy var joinButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Don't have an account? Join", for: .normal)
+        button.setTitle("join_title".localized, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .systemFont(ofSize: 19)
         button.addTarget(self, action: #selector(moveJoinVC), for: .touchUpInside)
@@ -67,17 +67,19 @@ class LoginViewController: UIViewController {
     }()
     
     @objc func tryLogin() {
-        let title = "로그인 결과"
-        var message = "로그인에 성공했습니다."
+        view.endEditing(true)
+        
+        let title = "login_result_title".localized
+        var message = "login_result_message".localized
         
         if emailTextField.text?.isEmpty ?? true {
             emailTextField.setError()
-            message = "입력 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         if passwordTextField.text?.isEmpty ?? true {
             passwordTextField.setError()
-            message = "입력 값을 입력하세요."
+            message = "input_error_message".localized
         }
         
         let loginResultAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
