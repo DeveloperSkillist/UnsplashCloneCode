@@ -18,6 +18,9 @@
 		3655D90F274F779800E80005 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3655D90E274F779800E80005 /* ImageCache.swift */; };
 		365B19FF27530BEC0046A87D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B19FE27530BEC0046A87D /* LoginViewController.swift */; };
 		365B1A0127531AF00046A87D /* UnderLineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B1A0027531AF00046A87D /* UnderLineTextField.swift */; };
+		365B1A03275356770046A87D /* AccountNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B1A02275356770046A87D /* AccountNavigationController.swift */; };
+		365B1A05275358CD0046A87D /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B1A04275358CD0046A87D /* ResetPasswordViewController.swift */; };
+		365B1A07275358E80046A87D /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B1A06275358E80046A87D /* JoinViewController.swift */; };
 		36C801FF274E74020099D173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C801FE274E74020099D173 /* AppDelegate.swift */; };
 		36C80201274E74020099D173 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C80200274E74020099D173 /* SceneDelegate.swift */; };
 		36C80208274E74040099D173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36C80207274E74040099D173 /* Assets.xcassets */; };
@@ -45,6 +48,9 @@
 		3655D90E274F779800E80005 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		365B19FE27530BEC0046A87D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		365B1A0027531AF00046A87D /* UnderLineTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderLineTextField.swift; sourceTree = "<group>"; };
+		365B1A02275356770046A87D /* AccountNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNavigationController.swift; sourceTree = "<group>"; };
+		365B1A04275358CD0046A87D /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		365B1A06275358E80046A87D /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
 		36C801FB274E74020099D173 /* UnsplashCloneCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashCloneCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C801FE274E74020099D173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36C80200274E74020099D173 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,9 +89,9 @@
 		3655D907274F28BA00E80005 /* PhotoDetail */ = {
 			isa = PBXGroup;
 			children = (
+				3655D90C274F6BC100E80005 /* CellChangeDelegate.swift */,
 				3655D908274F290C00E80005 /* PhotoDetailViewController.swift */,
 				3655D90A274F4C7C00E80005 /* PhotoDetailCollectionViewCell.swift */,
-				3655D90C274F6BC100E80005 /* CellChangeDelegate.swift */,
 			);
 			path = PhotoDetail;
 			sourceTree = "<group>";
@@ -102,9 +108,36 @@
 		365B19FD27530BCB0046A87D /* Account */ = {
 			isa = PBXGroup;
 			children = (
-				365B19FE27530BEC0046A87D /* LoginViewController.swift */,
+				365B1A02275356770046A87D /* AccountNavigationController.swift */,
+				365B1A082753638D0046A87D /* Login */,
+				365B1A09275363940046A87D /* ResetPassword */,
+				365B1A0A2753639C0046A87D /* Join */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		365B1A082753638D0046A87D /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				365B19FE27530BEC0046A87D /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		365B1A09275363940046A87D /* ResetPassword */ = {
+			isa = PBXGroup;
+			children = (
+				365B1A04275358CD0046A87D /* ResetPasswordViewController.swift */,
+			);
+			path = ResetPassword;
+			sourceTree = "<group>";
+		};
+		365B1A0A2753639C0046A87D /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				365B1A06275358E80046A87D /* JoinViewController.swift */,
+			);
+			path = Join;
 			sourceTree = "<group>";
 		};
 		36C801F2274E74010099D173 = {
@@ -270,13 +303,16 @@
 				365B19FF27530BEC0046A87D /* LoginViewController.swift in Sources */,
 				3655D90B274F4C7C00E80005 /* PhotoDetailCollectionViewCell.swift in Sources */,
 				3655D90F274F779800E80005 /* ImageCache.swift in Sources */,
+				365B1A03275356770046A87D /* AccountNavigationController.swift in Sources */,
 				3655D906274F113B00E80005 /* DownloadableImageView.swift in Sources */,
 				36C8021C274E7FBE0099D173 /* PhotoListViewController.swift in Sources */,
+				365B1A05275358CD0046A87D /* ResetPasswordViewController.swift in Sources */,
 				365B1A0127531AF00046A87D /* UnderLineTextField.swift in Sources */,
 				36C8021F274E83030099D173 /* PhotoListCollectionViewCell.swift in Sources */,
 				3655D90D274F6BC100E80005 /* CellChangeDelegate.swift in Sources */,
 				36C801FF274E74020099D173 /* AppDelegate.swift in Sources */,
 				363DF39D2750F282009D2BF5 /* Enums.swift in Sources */,
+				365B1A07275358E80046A87D /* JoinViewController.swift in Sources */,
 				36C8021A274E7EB30099D173 /* TabBarController.swift in Sources */,
 				363DF39A2750EF61009D2BF5 /* String+Extension.swift in Sources */,
 				36C80225274E91870099D173 /* Photos.swift in Sources */,

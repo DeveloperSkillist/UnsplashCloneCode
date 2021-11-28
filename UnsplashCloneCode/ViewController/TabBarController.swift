@@ -36,7 +36,7 @@ class TabBarController: UITabBarController {
         )
         
         //account Tab
-        let accountViewController = UINavigationController(rootViewController: LoginViewController())
+        let accountViewController = AccountNavigationController(rootViewController: LoginViewController())
         accountViewController.tabBarItem = UITabBarItem(
             title: "Account",
             image: UIImage(systemName: "person.crop.circle"),

@@ -5,20 +5,20 @@
 //  Created by skillist on 2021/11/28.
 //
 
-import Foundation
 import UIKit
+import SnapKit
 
 class LoginViewController: UIViewController {
-    
     //underLine을 가진 TextField
     private lazy var emailTextField: UnderLineTextField = {
         let textField = UnderLineTextField()
         textField.borderStyle = .none
         textField.tintColor = .white
         textField.textColor = .white
+        textField.keyboardType = .emailAddress
         textField.setPlaceholder(
             placeholder: "Email",
-            color: .darkGray
+            color: .lightGray
         )
         return textField
     }()
@@ -29,9 +29,10 @@ class LoginViewController: UIViewController {
         textField.borderStyle = .none
         textField.tintColor = .white
         textField.textColor = .white
+        textField.isSecureTextEntry = true
         textField.setPlaceholder(
             placeholder: "Password",
-            color: .darkGray
+            color: .lightGray
         )
         return textField
     }()
@@ -39,28 +40,61 @@ class LoginViewController: UIViewController {
     private lazy var loginButton: UIButton = {
         let button = UIButton()
         button.setTitleColor(.black, for: .normal)
-        button.setTitleColor(.darkGray, for: .highlighted)
+        button.setTitleColor(.lightGray, for: .highlighted)
         button.setTitle("Log In", for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 8
+        button.addTarget(self, action: #selector(tryLogin), for: .touchUpInside)
         return button
     }()
     
     private lazy var forgotPasswordButton: UIButton = {
         let button = UIButton()
         button.setTitle("Forgot your password?", for: .normal)
-        button.setTitleColor(.darkGray, for: .highlighted)
+        button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.addTarget(self, action: #selector(moveForgotVC), for: .touchUpInside)
         return button
     }()
     
     private lazy var joinButton: UIButton = {
         let button = UIButton()
         button.setTitle("Don't have an account? Join", for: .normal)
-        button.setTitleColor(.darkGray, for: .highlighted)
+        button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .systemFont(ofSize: 19)
+        button.addTarget(self, action: #selector(moveJoinVC), for: .touchUpInside)
         return button
     }()
+    
+    @objc func tryLogin() {
+        let title = "로그인 결과"
+        var message = "로그인에 성공했습니다."
+        
+        if emailTextField.text?.isEmpty ?? true {
+            emailTextField.setError()
+            message = "입력 값을 입력하세요."
+        }
+        
+        if passwordTextField.text?.isEmpty ?? true {
+            passwordTextField.setError()
+            message = "입력 값을 입력하세요."
+        }
+        
+        let loginResultAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "ok".localized, style: .default, handler: nil)
+        loginResultAlert.addAction(okAction)
+        present(loginResultAlert, animated: true)
+    }
+    
+    @objc func moveForgotVC() {
+        let resetPasswordVC = ResetPasswordViewController()
+        navigationController?.pushViewController(resetPasswordVC, animated: true)
+    }
+    
+    @objc func moveJoinVC() {
+        let joinVC = JoinViewController()
+        navigationController?.pushViewController(joinVC, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +103,7 @@ class LoginViewController: UIViewController {
         setupLayout()
     }
     
-    func setupNavigationBar() {
+    private func setupNavigationBar() {
         navigationItem.title = "Login"
         //large title 설정
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -77,7 +111,7 @@ class LoginViewController: UIViewController {
         navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
     }
     
-    func setupLayout() {
+    private func setupLayout() {
         view.backgroundColor = .black
         
         [

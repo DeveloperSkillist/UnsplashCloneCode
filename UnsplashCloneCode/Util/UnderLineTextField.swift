@@ -13,6 +13,7 @@ class UnderLineTextField: UITextField {
 
     //placeHolder 컬러값
     lazy var placeholderColor: UIColor = self.tintColor
+    lazy var placeholderString: String = ""
     
     private lazy var underLineView: UIView = {
         let lineView = UIView()
@@ -43,18 +44,32 @@ class UnderLineTextField: UITextField {
     
     //placeholder 설정
     func setPlaceholder(placeholder: String, color: UIColor) {
+        placeholderString = placeholder
         placeholderColor = color
         
+        setPlaceholder()
+        underLineView.backgroundColor = placeholderColor
+    }
+    
+    func setPlaceholder() {
         self.attributedPlaceholder = NSAttributedString(
-            string: placeholder,
+            string: placeholderString,
             attributes: [NSAttributedString.Key.foregroundColor: placeholderColor]
         )
-        underLineView.backgroundColor = placeholderColor
+    }
+    
+    func setError() {
+        self.attributedPlaceholder = NSAttributedString(
+            string: placeholderString,
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.red]
+        )
+        underLineView.backgroundColor = .red
     }
 }
 
 extension UnderLineTextField {
     @objc func editingDidBegin() {
+        setPlaceholder()
         underLineView.backgroundColor = self.tintColor
     }
     
