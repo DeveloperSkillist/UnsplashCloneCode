@@ -51,6 +51,10 @@ class TabBarController: UITabBarController {
             selectedImage: UIImage(systemName: "person.crop.circle.fill")
         )
         
-        viewControllers = [photoListViewController, searchViewController, accountViewController]
+        viewControllers = [
+            photoListViewController,
+//            searchViewController,
+            accountViewController
+        ]
     }
 }
