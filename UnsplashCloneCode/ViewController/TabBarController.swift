@@ -35,6 +35,14 @@ class TabBarController: UITabBarController {
             selectedImage: UIImage(systemName: "photo.fill")
         )
         
+        //search Tab
+        let searchViewController = SearchNavigationViewController(rootViewController: SearchMainViewController())
+        searchViewController.tabBarItem = UITabBarItem(
+            title: "Search",
+            image: UIImage(systemName: "magnifyingglass"),
+            selectedImage: UIImage(systemName: "magnifyingglass")
+        )
+        
         //account Tab
         let accountViewController = AccountNavigationController(rootViewController: LoginViewController())
         accountViewController.tabBarItem = UITabBarItem(
@@ -43,6 +51,6 @@ class TabBarController: UITabBarController {
             selectedImage: UIImage(systemName: "person.crop.circle.fill")
         )
         
-        viewControllers = [photoListViewController, accountViewController]
+        viewControllers = [photoListViewController, searchViewController, accountViewController]
     }
 }

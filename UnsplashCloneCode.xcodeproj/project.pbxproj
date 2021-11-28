@@ -21,6 +21,8 @@
 		365B1A03275356770046A87D /* AccountNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B1A02275356770046A87D /* AccountNavigationController.swift */; };
 		365B1A05275358CD0046A87D /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B1A04275358CD0046A87D /* ResetPasswordViewController.swift */; };
 		365B1A07275358E80046A87D /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365B1A06275358E80046A87D /* JoinViewController.swift */; };
+		36A11DD02753947600D04C52 /* SearchMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A11DCF2753947600D04C52 /* SearchMainViewController.swift */; };
+		36A11DD22753955900D04C52 /* SearchNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A11DD12753955900D04C52 /* SearchNavigationViewController.swift */; };
 		36C801FF274E74020099D173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C801FE274E74020099D173 /* AppDelegate.swift */; };
 		36C80201274E74020099D173 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C80200274E74020099D173 /* SceneDelegate.swift */; };
 		36C80208274E74040099D173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36C80207274E74040099D173 /* Assets.xcassets */; };
@@ -51,6 +53,8 @@
 		365B1A02275356770046A87D /* AccountNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNavigationController.swift; sourceTree = "<group>"; };
 		365B1A04275358CD0046A87D /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		365B1A06275358E80046A87D /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
+		36A11DCF2753947600D04C52 /* SearchMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMainViewController.swift; sourceTree = "<group>"; };
+		36A11DD12753955900D04C52 /* SearchNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNavigationViewController.swift; sourceTree = "<group>"; };
 		36C801FB274E74020099D173 /* UnsplashCloneCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashCloneCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36C801FE274E74020099D173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36C80200274E74020099D173 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -140,6 +144,15 @@
 			path = Join;
 			sourceTree = "<group>";
 		};
+		36A11DCE2753944E00D04C52 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				36A11DCF2753947600D04C52 /* SearchMainViewController.swift */,
+				36A11DD12753955900D04C52 /* SearchNavigationViewController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		36C801F2274E74010099D173 = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +203,7 @@
 			children = (
 				36C80219274E7EB30099D173 /* TabBarController.swift */,
 				365B19FC27530B200046A87D /* Photo */,
+				36A11DCE2753944E00D04C52 /* Search */,
 				365B19FD27530BCB0046A87D /* Account */,
 			);
 			path = ViewController;
@@ -305,12 +319,14 @@
 				3655D90F274F779800E80005 /* ImageCache.swift in Sources */,
 				365B1A03275356770046A87D /* AccountNavigationController.swift in Sources */,
 				3655D906274F113B00E80005 /* DownloadableImageView.swift in Sources */,
+				36A11DD22753955900D04C52 /* SearchNavigationViewController.swift in Sources */,
 				36C8021C274E7FBE0099D173 /* PhotoListViewController.swift in Sources */,
 				365B1A05275358CD0046A87D /* ResetPasswordViewController.swift in Sources */,
 				365B1A0127531AF00046A87D /* UnderLineTextField.swift in Sources */,
 				36C8021F274E83030099D173 /* PhotoListCollectionViewCell.swift in Sources */,
 				3655D90D274F6BC100E80005 /* CellChangeDelegate.swift in Sources */,
 				36C801FF274E74020099D173 /* AppDelegate.swift in Sources */,
+				36A11DD02753947600D04C52 /* SearchMainViewController.swift in Sources */,
 				363DF39D2750F282009D2BF5 /* Enums.swift in Sources */,
 				365B1A07275358E80046A87D /* JoinViewController.swift in Sources */,
 				36C8021A274E7EB30099D173 /* TabBarController.swift in Sources */,
