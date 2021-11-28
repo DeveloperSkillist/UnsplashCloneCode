@@ -124,9 +124,6 @@ class PhotoListViewController: UIViewController {
             
             self?.tabBarController?.tabBar.alpha = tabBarAlpha
             self?.tabBarController?.tabBar.frame.origin = CGPoint(x: 0, y: tabbarHeight)
-            
-            print("miny \(UIScreen.main.bounds.minY)")
-            print("maxy \(UIScreen.main.bounds.maxY)")
         })
     }
     
