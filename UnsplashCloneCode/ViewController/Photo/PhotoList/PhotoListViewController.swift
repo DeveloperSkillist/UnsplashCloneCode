@@ -145,9 +145,7 @@ extension PhotoListViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //cell 선택 시 중앙으로 이동 후 detailView 보여주기
         collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             let detailVC = PhotoDetailViewController()
             detailVC.photos = self?.photos ?? []
