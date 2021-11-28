@@ -13,6 +13,8 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
 
         //TabBar의 아이템 설정
+        
+        //photo Tab
         let photoListViewController = PhotoListViewController()
         photoListViewController.tabBarItem = UITabBarItem(
             title: "Photos",
@@ -20,6 +22,14 @@ class TabBarController: UITabBarController {
             selectedImage: UIImage(systemName: "photo.fill")
         )
         
-        viewControllers = [photoListViewController]
+        //account Tab
+        let accountViewController = UINavigationController(rootViewController: LoginViewController())
+        accountViewController.tabBarItem = UITabBarItem(
+            title: "Account",
+            image: UIImage(systemName: "person.crop.circle"),
+            selectedImage: UIImage(systemName: "person.crop.circle.fill")
+        )
+        
+        viewControllers = [photoListViewController, accountViewController]
     }
 }
