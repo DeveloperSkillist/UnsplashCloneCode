@@ -24,7 +24,8 @@ class PhotoListViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
         collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: "PhotoListCollectionViewCell")
-    
+        collectionView.backgroundColor = .black
+        
         //스크롤 다운하여 목록 리프레시 구현
         let refreshController = UIRefreshControl()
         refreshController.addTarget(self, action: #selector(refreshPhotos), for: .valueChanged)
@@ -49,7 +50,7 @@ class PhotoListViewController: UIViewController {
     private func setupLayout() {
         view.addSubview(collectionView)
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .black
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -127,6 +128,10 @@ class PhotoListViewController: UIViewController {
             print("miny \(UIScreen.main.bounds.minY)")
             print("maxy \(UIScreen.main.bounds.maxY)")
         })
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 }
 
