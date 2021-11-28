@@ -30,6 +30,7 @@ class ResetPasswordViewController: UIViewController {
         button.setTitle("Reset", for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 8
+        //button action 추가
         button.addTarget(self, action: #selector(resetPassword), for: .touchUpInside)
         return button
     }()

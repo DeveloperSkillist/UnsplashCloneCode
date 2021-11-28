@@ -44,6 +44,7 @@ class LoginViewController: UIViewController {
         button.setTitle("login_title".localized, for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 8
+        //button action 추가
         button.addTarget(self, action: #selector(tryLogin), for: .touchUpInside)
         return button
     }()
@@ -53,6 +54,7 @@ class LoginViewController: UIViewController {
         button.setTitle("find_password_title".localized, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .systemFont(ofSize: 14)
+        //button action 추가
         button.addTarget(self, action: #selector(moveForgotVC), for: .touchUpInside)
         return button
     }()
@@ -62,6 +64,7 @@ class LoginViewController: UIViewController {
         button.setTitle("join_title".localized, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .systemFont(ofSize: 19)
+        //button action 추가
         button.addTarget(self, action: #selector(moveJoinVC), for: .touchUpInside)
         return button
     }()
