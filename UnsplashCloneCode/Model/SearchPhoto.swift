@@ -10,3 +10,8 @@ import Foundation
 struct SearchPhoto: Decodable {
     let type: Int
 }
+
+struct SearchMainItem {
+    let type: SearchMainType
+    let items: [Any]
+}

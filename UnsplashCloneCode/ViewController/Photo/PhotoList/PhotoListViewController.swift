@@ -59,7 +59,7 @@ class PhotoListViewController: UIViewController {
     //이미지 fetch 구현
     private func fetchPhotos(isRefresh: Bool = false) {
         //현재 페이지에 1을 더하여 다음 페이지 가져오기
-        PhotosAPI.fetchPhotos(pageNum: pageNum + 1) { [weak self] data, response, error in
+        UnsplashAPI.fetchPhotos(pageNum: pageNum + 1) { [weak self] data, response, error in
             guard error == nil,
                   let response = response as? HTTPURLResponse,
                   let data = data else {

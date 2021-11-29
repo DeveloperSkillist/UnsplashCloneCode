@@ -12,3 +12,8 @@ enum Errors: Error {
     case dataError
     case etc
 }
+
+enum SearchMainType: Int {
+    case category
+    case discover
+}
