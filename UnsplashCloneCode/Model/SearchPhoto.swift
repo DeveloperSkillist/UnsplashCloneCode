@@ -13,5 +13,5 @@ struct SearchPhoto: Decodable {
 
 struct SearchMainItem {
     let type: SearchMainType
-    let items: [Any]
+    var items: [Any]
 }

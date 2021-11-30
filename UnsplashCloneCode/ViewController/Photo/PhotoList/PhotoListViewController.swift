@@ -11,6 +11,7 @@ import SnapKit
 class PhotoListViewController: UIViewController {
     private var pageNum = 0
     private var photos: [Photo] = []
+    private var isFetching = false
     
     //메인 사진 목록을 보여줄 CollectionView
     private lazy var collectionView: UICollectionView = {
@@ -58,8 +59,14 @@ class PhotoListViewController: UIViewController {
     
     //이미지 fetch 구현
     private func fetchPhotos(isRefresh: Bool = false) {
+        if isFetching {
+            return
+        }
+        isFetching = true
+        
         //현재 페이지에 1을 더하여 다음 페이지 가져오기
         UnsplashAPI.fetchPhotos(pageNum: pageNum + 1) { [weak self] data, response, error in
+            self?.isFetching = false
             guard error == nil,
                   let response = response as? HTTPURLResponse,
                   let data = data else {
@@ -187,11 +194,10 @@ extension PhotoListViewController: UICollectionViewDataSourcePrefetching {
             return
         }
         
-        guard let firstIndexPath = indexPaths.first else {
+        guard let row = indexPaths.first?.row else {
             return
         }
         
-        let row = firstIndexPath.row
         if row == photos.count - 11 || row == photos.count - 6 || row == photos.count - 1 {
             fetchPhotos()
         }

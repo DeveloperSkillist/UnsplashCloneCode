@@ -8,7 +8,8 @@
 import UIKit
 
 class SearchMainViewController: UICollectionViewController {
-    var contents: [SearchMainItem] = []
+    private var pageNum = 0
+    private var contents: [SearchMainItem] = [SearchMainItem(type: .category, items: []), SearchMainItem(type: .discover, items: [])]
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -23,6 +24,7 @@ class SearchMainViewController: UICollectionViewController {
         setupCollectionView()
         setupLayout()
         fetchCategories()
+        fetchDiscover()
     }
     
     private func setupNavigationBar() {
@@ -55,6 +57,9 @@ class SearchMainViewController: UICollectionViewController {
             $0.edges.equalToSuperview()
         }
     }
+}
+
+extension SearchMainViewController {
     
     private func fetchCategories() {
         UnsplashAPI.fetchCategories { [weak self] data, response, error in
@@ -72,10 +77,52 @@ class SearchMainViewController: UICollectionViewController {
             case (200...299):
                 do {
                     let fetchedCategories = try JSONDecoder().decode([Category].self, from: data)
-                    let categories = SearchMainItem(type: .category, items: fetchedCategories)
-                    self?.contents.append(categories)
+                    self?.contents[0].items = fetchedCategories
                     
                     DispatchQueue.main.async {
+                        self?.collectionView.reloadData()
+                    }
+                } catch {
+                    DispatchQueue.main.async {  //에러 발생 시 에러 보여주기
+                        self?.showNetworkErrorAlert(error: .jsonParsingError)
+                    }
+                }
+                
+            default:
+                DispatchQueue.main.async {  //에러 발생 시 에러 보여주기
+                    self?.showNetworkErrorAlert(error: .networkError)
+                }
+                return
+            }
+        }
+    }
+    
+    private func fetchDiscover() {
+        UnsplashAPI.fetchPhotos(pageNum: pageNum + 1) { [weak self] data, response, error in
+            guard error == nil,
+                  let response = response as? HTTPURLResponse,
+                  let data = data else {
+                      DispatchQueue.main.async {    //에러 발생 시 에러 보여주기
+                          self?.showNetworkErrorAlert(error: .networkError)
+                      }
+                      return
+                  }
+            
+            switch response.statusCode {
+            //response 성공 시, 목록 설정하기
+            case (200...299):
+                do {
+                    let fetchedPhotos = try JSONDecoder().decode([Photo].self, from: data)
+                    
+                    if self?.pageNum == 0 { //첫페이지를 가져온 경우 목록 설정
+                        self?.contents[1].items = fetchedPhotos
+                    } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
+                        self?.contents[1].items.append(contentsOf: fetchedPhotos)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        //다음 페이지 번호 설정
+                        self?.pageNum += 1
                         self?.collectionView.reloadData()
                     }
                 } catch {
@@ -101,8 +148,8 @@ extension SearchMainViewController {
             switch self?.contents[section].type {
             case .category:
                 return self?.createCategorySection()
-            case is Any:
-                return nil
+            case .discover:
+                return self?.createDiscoverSection()
             default:
                 return nil
             }
@@ -111,20 +158,41 @@ extension SearchMainViewController {
     
     private func createCategorySection() -> NSCollectionLayoutSection {
         //아이템
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3), heightDimension: .fractionalWidth(0.3))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        item.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
         
         //그룹
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalWidth(0.9))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 3)
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 9)
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3), heightDimension: .fractionalWidth(0.6))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
         
         //섹션
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
+        section.contentInsets = .init(top: 0, leading: 10, bottom: 0, trailing: 10)
+        
+        let sectionHeader = createSectionHeader()
+        section.boundarySupplementaryItems = [sectionHeader]
+        return section
+    }
+    
+    //TODO discover
+    private func createDiscoverSection() -> NSCollectionLayoutSection {
+        //아이템
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        //그룹
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(200))
+//        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
+//        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+        
+        //섹션
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         let sectionHeader = createSectionHeader()
@@ -134,7 +202,7 @@ extension SearchMainViewController {
     
     private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         //Header Header size
-        let layoutSectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
+        let layoutSectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(60))
         
         //section header layout
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: layoutSectionHeaderSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
@@ -168,14 +236,17 @@ extension SearchMainViewController {
             cell.setup(category: category)
             return cell
             
-        case is Any:
+        case .discover:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchDiscoverCollectionViewCell", for: indexPath) as? SearchDiscoverCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            return cell
             
-        default:
-            return UICollectionViewCell()
+            guard let photos = contents[indexPath.section].items as? [Photo] else {
+                return UICollectionViewCell()
+            }
+            let photo = photos[indexPath.row]
+            cell.setup(photo: photo)
+            return cell
         }
     }
     
@@ -187,11 +258,9 @@ extension SearchMainViewController {
             
             switch contents[indexPath.section].type {
             case .category:
-                headerView.headerLabel.text = "Category"
-            case is Any:
-                headerView.headerLabel.text = "temp"
-            default:
-                headerView.headerLabel.text = "unknown"
+                headerView.headerLabel.text = "Browse by Category"
+            case .discover:
+                headerView.headerLabel.text = "Discover"
             }
             return headerView
         } else {

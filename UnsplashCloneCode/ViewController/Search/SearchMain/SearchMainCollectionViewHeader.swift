@@ -10,7 +10,7 @@ import UIKit
 class SearchMainCollectionViewHeader: UICollectionReusableView {
     var headerLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.font = .systemFont(ofSize: 25, weight: .bold)
         label.textColor = .white
         return label
     }()
