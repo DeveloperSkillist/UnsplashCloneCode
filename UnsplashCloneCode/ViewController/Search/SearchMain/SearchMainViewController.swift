@@ -181,18 +181,15 @@ extension SearchMainViewController {
         //아이템
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        item.contentInsets = .init(top: 1, leading: 1, bottom: 1, trailing: 1)
         
         //그룹
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(200))
-//        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
-//        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(200))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
         
         //섹션
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        section.orthogonalScrollingBehavior = .none
         section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         let sectionHeader = createSectionHeader()
