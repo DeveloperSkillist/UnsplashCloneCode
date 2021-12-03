@@ -8,7 +8,7 @@
 import UIKit
 
 class SearchMainViewController: UICollectionViewController {
-    private var pageNum = 0
+    private var discoverPageNum = 0
     private var contents: [SearchMainItem] = [SearchMainItem(type: .category, items: []), SearchMainItem(type: .discover, items: [])]
     
     private lazy var searchBar: UISearchBar = {
@@ -98,7 +98,7 @@ extension SearchMainViewController {
     }
     
     private func fetchDiscover() {
-        UnsplashAPI.fetchPhotos(pageNum: pageNum + 1) { [weak self] data, response, error in
+        UnsplashAPI.fetchPhotos(pageNum: discoverPageNum + 1) { [weak self] data, response, error in
             guard error == nil,
                   let response = response as? HTTPURLResponse,
                   let data = data else {
@@ -114,7 +114,7 @@ extension SearchMainViewController {
                 do {
                     let fetchedPhotos = try JSONDecoder().decode([Photo].self, from: data)
                     
-                    if self?.pageNum == 0 { //첫페이지를 가져온 경우 목록 설정
+                    if self?.discoverPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
                         self?.contents[1].items = fetchedPhotos
                     } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
                         self?.contents[1].items.append(contentsOf: fetchedPhotos)
@@ -122,7 +122,7 @@ extension SearchMainViewController {
                     
                     DispatchQueue.main.async {
                         //다음 페이지 번호 설정
-                        self?.pageNum += 1
+                        self?.discoverPageNum += 1
                         self?.collectionView.reloadData()
                     }
                 } catch {
@@ -158,18 +158,20 @@ extension SearchMainViewController {
     
     private func createCategorySection() -> NSCollectionLayoutSection {
         //아이템
+        let itemMargin: CGFloat = 5
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 5, leading: 5, bottom: 5, trailing: 5)
+        item.contentInsets = .init(top: itemMargin, leading: itemMargin, bottom: itemMargin, trailing: itemMargin)
         
         //그룹
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3), heightDimension: .fractionalWidth(0.6))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
+        group.contentInsets = .init(top: 0, leading: itemMargin, bottom: 0, trailing: itemMargin)
         
         //섹션
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
-        section.contentInsets = .init(top: 0, leading: 10, bottom: 0, trailing: 10)
+//        section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         let sectionHeader = createSectionHeader()
         section.boundarySupplementaryItems = [sectionHeader]
@@ -179,18 +181,20 @@ extension SearchMainViewController {
     //TODO discover
     private func createDiscoverSection() -> NSCollectionLayoutSection {
         //아이템
+        let itemMargin: CGFloat = 1
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 1, leading: 1, bottom: 1, trailing: 1)
+        item.contentInsets = .init(top: itemMargin, leading: itemMargin, bottom: itemMargin, trailing: itemMargin)
         
         //그룹
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(200))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
+//        group.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         //섹션
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .none
-        section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+//        section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
         
         let sectionHeader = createSectionHeader()
         section.boundarySupplementaryItems = [sectionHeader]
@@ -262,6 +266,13 @@ extension SearchMainViewController {
             return headerView
         } else {
             return UICollectionReusableView()
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.section == 1,
+           indexPath.row == contents[1].items.count - 2 {
+            fetchDiscover()
         }
     }
 }
