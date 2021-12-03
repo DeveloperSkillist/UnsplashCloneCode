@@ -64,6 +64,8 @@ class LoginViewController: UIViewController {
         button.setTitle("join_title".localized, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
         button.titleLabel?.font = .systemFont(ofSize: 19)
+        button.titleLabel?.lineBreakMode = .byWordWrapping
+        button.titleLabel?.textAlignment = .center
         //button action 추가
         button.addTarget(self, action: #selector(moveJoinVC), for: .touchUpInside)
         return button
