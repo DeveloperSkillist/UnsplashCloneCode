@@ -11,14 +11,24 @@ import SnapKit
 //이미지를 다운로드할 수 있는 이미지뷰
 class DownloadableImageView: UIImageView {
     
+    var dataTask: URLSessionTask?
+    
     //이미지뷰의 다운로드 취소 여부 확인
-    var isCancel: Bool = false
+    var isCancel: Bool = false {
+        willSet {
+            if newValue {
+                dataTask?.cancel()
+            }
+        }
+    }
     
     //이미지 다운로드 실패 시 이미지뷰 처리
     private var isFail: Bool = false {
         willSet {
-            textView.isHidden = !newValue
-            loadingView.stopAnimating()
+            DispatchQueue.main.async { [weak self] in
+                self?.textView.isHidden = !newValue
+                self?.loadingView.stopAnimating()
+            }
         }
     }
     
@@ -44,6 +54,15 @@ class DownloadableImageView: UIImageView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        setupLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    private func setupLayout() {
         [
             loadingView,
             textView
@@ -60,14 +79,11 @@ class DownloadableImageView: UIImageView {
         }
     }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-    
     //이미지 Url 입력하여 다운롣,
     func downloadImage(url: String) {
-        isCancel = false
+        self.image = nil
         isFail = false
+        isCancel = false
         
         //이미지 캐시하여, 이미지가 존재하면, 이미지 적용
         if let image = ImageCache.shared.object(forKey: url as NSString) {
@@ -83,7 +99,7 @@ class DownloadableImageView: UIImageView {
         //이미지 다운로드 시작을 사용자에게 알림
         loadingView.startAnimating()
         
-        let dataTask = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+        dataTask = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             guard let self = self else {
                 return
             }
@@ -92,7 +108,7 @@ class DownloadableImageView: UIImageView {
                   let response = response as? HTTPURLResponse,
                   let data = data,
                   let image = UIImage(data: data) else {
-                      print("imageDownload error1")
+                      print("imageDownload error1 \(error)")
                       self.isFail = true
                       return
                   }
@@ -108,9 +124,9 @@ class DownloadableImageView: UIImageView {
             //다운받은 이미지 적용
             DispatchQueue.main.async {
                 self.image = image
-                self.loadingView.stopAnimating()
+                self.isFail = false
             }
         }
-        dataTask.resume()
+        dataTask?.resume()
     }
 }
