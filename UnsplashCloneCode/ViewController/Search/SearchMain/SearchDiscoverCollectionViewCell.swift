@@ -18,6 +18,7 @@ class SearchDiscoverCollectionViewCell: UICollectionViewCell {
     private var label: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 10)
+        label.textColor = .white
         return label
     }()
     
