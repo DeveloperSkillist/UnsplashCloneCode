@@ -17,3 +17,9 @@ enum SearchMainType: Int {
     case category
     case discover
 }
+
+enum SearchType: String {
+    case Photos = "photos"
+    case Collections = "collections"
+    case Users = "users"
+}

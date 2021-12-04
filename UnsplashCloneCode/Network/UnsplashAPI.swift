@@ -61,4 +61,31 @@ class UnsplashAPI {
         let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
         dataTask.resume()
     }
+    
+    static func fetchSearchResult(
+        searchText: String,
+        searchType: SearchType,
+        pageNum: Int,
+        completionHandler: @escaping (Data?, URLResponse?, Error?) ->Void ) {
+            print("fetchSearchResult : \(searchText), \(searchType.rawValue), \(pageNum)")
+            var urlComponents = unsplashURLComponent
+            urlComponents.path = "/search/\(searchType.rawValue)"
+            urlComponents.queryItems = [
+                URLQueryItem(name: "page", value: String(pageNum)),
+                URLQueryItem(name: "per_page", value: "30"),
+                URLQueryItem(name: "query", value: searchText),
+                //본인의 accesskey를 입력하세요.
+                URLQueryItem(name: "client_id", value: APIKeys.accesskey)
+            ]
+            
+            guard let url = urlComponents.url else {
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+            dataTask.resume()
+        }
 }
