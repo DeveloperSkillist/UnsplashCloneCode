@@ -7,10 +7,6 @@
 
 import Foundation
 
-struct SearchPhoto: Decodable {
-    let type: Int
-}
-
 struct SearchMainItem {
     let type: SearchMainType
     var items: [Any]

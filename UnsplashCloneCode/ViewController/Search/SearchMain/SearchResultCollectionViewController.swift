@@ -30,6 +30,9 @@ class SearchResultCollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = .yellow
         
         collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: "PhotoListCollectionViewCell")
+        collectionView.register(SearchCollectionCollectionViewCell.self, forCellWithReuseIdentifier: "SearchCollectionCollectionViewCell")
+        collectionView.register(SearchUserCollectionViewCell.self, forCellWithReuseIdentifier: "SearchUserCollectionViewCell")
+        collectionView.prefetchDataSource = self
     }
 }
 
@@ -60,10 +63,24 @@ extension SearchResultCollectionViewController {
             return cell
             
         case .Collections:
-            return UICollectionViewCell()
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchCollectionCollectionViewCell", for: indexPath) as? SearchCollectionCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            guard let item = items[indexPath.row] as? Collection else {
+                return UICollectionViewCell()
+            }
+            cell.setup(collection: item)
+            return cell
             
         case .Users:
-            return UICollectionViewCell()
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchUserCollectionViewCell", for: indexPath) as? SearchUserCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            guard let item = items[indexPath.row] as? User else {
+                return UICollectionViewCell()
+            }
+            cell.setup(user: item)
+            return cell
         }
     }
 }
@@ -104,13 +121,36 @@ extension SearchResultCollectionViewController {
             //response 성공 시, 목록 설정하기
             case (200...299):
                 do {
-//                    print("data : \(data.description)")
-                    let result = try JSONDecoder().decode(SearchPhotos.self, from: data)
-                    
-                    if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
-                        self?.items = result.results
-                    } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
-                        self?.items.append(contentsOf: result.results)
+                    switch self?.currentSearchType {
+                    case .Photos:
+                        let result = try JSONDecoder().decode(SearchPhotos.self, from: data)
+                        
+                        if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
+                            self?.items = result.results
+                        } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
+                            self?.items.append(contentsOf: result.results)
+                        }
+                        
+                    case .Collections:
+                        let result = try JSONDecoder().decode(SearchCollections.self, from: data)
+                        
+                        if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
+                            self?.items = result.results
+                        } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
+                            self?.items.append(contentsOf: result.results)
+                        }
+                        
+                    case .Users:
+                        let result = try JSONDecoder().decode(SearchUsers.self, from: data)
+                        
+                        if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
+                            self?.items = result.results
+                        } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
+                            self?.items.append(contentsOf: result.results)
+                        }
+                        
+                    case .none:
+                        return
                     }
                     
                     DispatchQueue.main.async {
@@ -131,6 +171,22 @@ extension SearchResultCollectionViewController {
                 }
                 return
             }
+        }
+    }
+}
+
+extension SearchResultCollectionViewController: UICollectionViewDataSourcePrefetching {
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        guard let indexPath = indexPaths.first else {
+            return
+        }
+        
+        let row = indexPath.row
+        if row == items.count - 11 ||
+            row == items.count - 6 ||
+            row == items.count - 1 {
+            fetchSearch()
         }
     }
 }
