@@ -9,7 +9,11 @@ import UIKit
 
 class SearchMainViewController: UICollectionViewController {
     private var discoverPageNum = 0
-    private var contents: [SearchMainItem] = [SearchMainItem(type: .category, items: []), SearchMainItem(type: .discover, items: [])]
+    private var contents: [SearchMainItem] = [
+        SearchMainItem(type: .category, items: []),
+        SearchMainItem(type: .discover, items: [])
+    ]
+    private var isFetching = false
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -98,7 +102,13 @@ extension SearchMainViewController {
     }
     
     private func fetchDiscover() {
+        if isFetching {
+            return
+        }
+        isFetching = true
+        
         UnsplashAPI.fetchPhotos(pageNum: discoverPageNum + 1) { [weak self] data, response, error in
+            self?.isFetching = false
             guard error == nil,
                   let response = response as? HTTPURLResponse,
                   let data = data else {
@@ -270,8 +280,14 @@ extension SearchMainViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.section == 1,
-           indexPath.row == contents[1].items.count - 2 {
+        if indexPath.section != 1 {
+            return
+        }
+        
+        let row = indexPath.row
+        if row == contents[1].items.count - 11 ||
+            row == contents[1].items.count - 6 ||
+            row == contents[1].items.count - 1 {
             fetchDiscover()
         }
     }
