@@ -17,26 +17,32 @@ class PhotoDetailCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
-    func setup(photo: Photo) {
-        self.photo = photo
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
         setupLayout()
     }
-}
-
-extension PhotoDetailCollectionViewCell {
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setupLayout() {
         self.addSubview(imageView)
         
-        guard let photo = photo else {
-            return
-        }
-        
-        let cellHeight = photo.imageRatio * contentView.frame.width
         imageView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.centerX.equalToSuperview()
             //BUG: PhotoListViewController와 PhotoDetailViewController의 사진 vertical center가 일치하지 않아, offset 설정
             $0.centerY.equalToSuperview().offset(-18)
+        }
+    }
+    
+    func setup(photo: Photo) {
+        self.photo = photo
+        
+        let cellHeight = photo.imageRatio * contentView.frame.width
+        imageView.snp.makeConstraints {
             $0.height.equalTo(cellHeight)
         }
         imageView.downloadImage(url: photo.urls.regular)

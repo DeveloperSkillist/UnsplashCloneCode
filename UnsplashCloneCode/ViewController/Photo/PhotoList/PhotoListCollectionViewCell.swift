@@ -34,7 +34,17 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
         photoImageView.isCancel = true
     }
     
-    func setup(photo: Photo) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        layoutLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func layoutLayout() {
         [
             photoImageView,
             photographerLabel
@@ -49,7 +59,9 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
         photographerLabel.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview().inset(10)
         }
-        
+    }
+    
+    func setup(photo: Photo) {
         photographerLabel.text = photo.user.name
         photoImageView.downloadImage(url: photo.urls.regular)
     }
