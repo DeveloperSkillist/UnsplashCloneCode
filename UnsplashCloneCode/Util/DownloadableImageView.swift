@@ -106,7 +106,7 @@ class DownloadableImageView: UIImageView {
             
             if let error = error as NSError?,
                error.code == -999 {
-                print("error : dataTask cancel")
+                print("error : \(error.localizedDescription)")
                 return
             }
             
