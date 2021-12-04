@@ -33,6 +33,7 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         photoImageView.isCancel = true
+        photoImageView.image = nil
     }
     
     override init(frame: CGRect) {
