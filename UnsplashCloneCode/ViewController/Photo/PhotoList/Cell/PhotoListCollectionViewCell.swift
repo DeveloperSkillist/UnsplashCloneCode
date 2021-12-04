@@ -31,6 +31,7 @@ class PhotoListCollectionViewCell: UICollectionViewCell {
     
     //cell reuse할 때, 다운로드 중인 이미지 적용 취소하기
     override func prepareForReuse() {
+        super.prepareForReuse()
         photoImageView.isCancel = true
     }
     
