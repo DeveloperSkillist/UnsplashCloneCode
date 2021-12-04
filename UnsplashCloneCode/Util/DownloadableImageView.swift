@@ -104,12 +104,16 @@ class DownloadableImageView: UIImageView {
                 return
             }
             
-            guard error == nil,
-                  let response = response as? HTTPURLResponse,
-                  let data = data,
+            if let error = error as NSError?,
+               error.code == -999 {
+                print("error : dataTask cancel")
+                return
+            }
+            
+            guard let data = data,
                   let image = UIImage(data: data) else {
-                      print("imageDownload error1 \(error)")
                       self.isFail = true
+                      print("imageDownload error : \(error.unsafelyUnwrapped.localizedDescription)")
                       return
                   }
             
