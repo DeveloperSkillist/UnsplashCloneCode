@@ -10,8 +10,7 @@ import SnapKit
 
 class SearchMainViewController: UICollectionViewController {
     private lazy var searchResultVC: SearchResultCollectionViewController = {
-       var searchResultVC = SearchResultCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        searchResultVC.collectionView.delegate = self
+       var searchResultVC = SearchResultCollectionViewController()
         return searchResultVC
     }()
     
@@ -21,14 +20,25 @@ class SearchMainViewController: UICollectionViewController {
         SearchMainItem(type: .discover, items: [])
     ]
     private var isFetching = false
+    private lazy var isShowScopeBar = false {
+        willSet {
+            searchController.searchBar.showsScopeBar = newValue
+            searchController.searchBar.sizeToFit()
+            
+//            navigationController?.view.sizeToFit()
+            navigationController?.view.setNeedsLayout()
+            navigationController?.view.layoutIfNeeded()
+//            navigationController?.navigationBar.backgroundColor = .blue
+//            navigationController?.navigationBar.barTintColor = UIColor.red
+            
+            
+        }
+    }
     
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: searchResultVC)
-//        searchController.delegate = self
-//        searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchResultsUpdater = self
         definesPresentationContext = true
         
         searchController.searchBar.delegate = self
@@ -37,8 +47,17 @@ class SearchMainViewController: UICollectionViewController {
         searchController.searchBar.scopeButtonTitles = ["Photos", "Collections", "Users"]
         searchController.searchBar.showsScopeBar = false
         searchController.searchBar.sizeToFit()
+        
         searchController.searchBar.tintColor = .white
         
+        
+        
+        
+        //테스트 코드
+//        navigationController?.navigationBar.tintColor = .blue
+//        navigationController?.navigationBar.barTintColor = .blue
+//        searchController.searchBar.backgroundColor = .blue
+
         return searchController
     }()
 
@@ -54,14 +73,30 @@ class SearchMainViewController: UICollectionViewController {
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.barTintColor = .black
+//        navigationController?.navigationBar.barTintColor = .white
+//        navigationController?.navigationBar.backgroundColor = .red
+//        navigationController?.navigationBar.isTranslucent = false
         
         navigationController?.navigationItem.searchController = searchController
         navigationItem.titleView = searchController.searchBar
+        
+        
+        //테스트 코드
+//        navigationController?.navigationBar.isTranslucent = false
+//                navigationController?.navigationBar.tintColor = .blue
+//                navigationController?.navigationBar.barTintColor = .blue
+//                searchController.searchBar.backgroundColor = .blue
+//        UINavigationBar.appearance().barTintColor = .blue
+//        searchController?.searchBar.frame.size.width = searchView.bounds.width
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.view.setNeedsLayout()
+        navigationController?.view.layoutIfNeeded()
     }
     
     private func setupCollectionView() {
-//        collectionView.keyboardDismissMode = .onDrag
         collectionView.backgroundColor = .black
         collectionView.delegate = self
         
@@ -210,7 +245,6 @@ extension SearchMainViewController {
         return section
     }
     
-    //TODO discover
     private func createDiscoverSection() -> NSCollectionLayoutSection {
         //아이템
         let itemMargin: CGFloat = 1
@@ -242,7 +276,6 @@ extension SearchMainViewController {
         
         return sectionHeader
     }
-    
 }
 
 extension SearchMainViewController {
@@ -335,7 +368,7 @@ extension SearchMainViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let searchBarText = searchBar.text ?? ""
         if !searchBarText.isEmpty {
-            searchBar.showsScopeBar = true
+            isShowScopeBar = true
             
             view.endEditing(true)
             //search
@@ -345,7 +378,7 @@ extension SearchMainViewController: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
-        searchBar.showsScopeBar = false
+        isShowScopeBar = false
         
         searchResultVC.resetResult()
     }
@@ -363,11 +396,5 @@ extension SearchMainViewController: UISearchBarDelegate {
         
         //search
         searchResultVC.currentSearchType = selectType
-    }
-}
-
-extension SearchMainViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        print("updateSearchResults")
     }
 }

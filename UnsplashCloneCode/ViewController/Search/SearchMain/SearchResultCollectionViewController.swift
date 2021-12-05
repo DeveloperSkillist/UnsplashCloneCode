@@ -9,14 +9,33 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class SearchResultCollectionViewController: UICollectionViewController {
+class SearchResultCollectionViewController: UIViewController {
+    //메인 사진 목록을 보여줄 CollectionView
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 1
+        layout.minimumInteritemSpacing = 0
+        layout.invalidateLayout()
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.prefetchDataSource = self
+        collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: "PhotoListCollectionViewCell")
+        collectionView.backgroundColor = .black
+        return collectionView
+    }()
+    
     var currentSearchType: SearchType = .Photos {
         didSet {
+            collectionView.setContentOffset(.zero, animated: false)
             fetchFirstSearch()
         }
     }
+    
     private var isSearchFetching = false
     private var searchPageNum = 0
+    private var searchLastPageNum = 0
     var searchText = ""
     var items: [Any] = []
     
@@ -27,29 +46,38 @@ class SearchResultCollectionViewController: UICollectionViewController {
     }
     
     private func setupCollectionView() {
-        collectionView.backgroundColor = .yellow
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        collectionView.backgroundColor = .black
         
         collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: "PhotoListCollectionViewCell")
         collectionView.register(SearchCollectionCollectionViewCell.self, forCellWithReuseIdentifier: "SearchCollectionCollectionViewCell")
         collectionView.register(SearchUserCollectionViewCell.self, forCellWithReuseIdentifier: "SearchUserCollectionViewCell")
         collectionView.prefetchDataSource = self
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+//        view.sizeToFit()
+//        view.setNeedsLayout()
+//        view.layoutIfNeeded()
+    }
 }
 
-extension SearchResultCollectionViewController {
+extension SearchResultCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         switch currentSearchType {
         case .Photos:
@@ -76,10 +104,19 @@ extension SearchResultCollectionViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchUserCollectionViewCell", for: indexPath) as? SearchUserCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            guard let item = items[indexPath.row] as? User else {
+            
+            let row = indexPath.row
+            guard let item = items[row] as? User else {
                 return UICollectionViewCell()
             }
-            cell.setup(user: item)
+            
+            if row == 0 {
+                cell.firstIndexSetup(user: item)
+            } else if row == items.count-1 {
+                cell.lastIndexSetup(user: item)
+            } else {
+                cell.middleIndexSetup(user: item)
+            }
             return cell
         }
     }
@@ -93,14 +130,26 @@ extension SearchResultCollectionViewController {
     }
     
     func fetchFirstSearch(searchText: String = "") {
-        searchPageNum = 0
+        items.removeAll()
+        collectionView.reloadData()
+        
         if !searchText.isEmpty {
             self.searchText = searchText
         }
+        UnsplashAPI.dataTask?.cancel()
+        isSearchFetching = false
+        searchPageNum = 0
+        searchLastPageNum = 0
         fetchSearch()
     }
     
     func fetchSearch() {
+        print("searchPageNum : \(searchPageNum + 1)")
+        print("searchLastPageNum : \(searchLastPageNum)")
+        if searchPageNum + 1 == searchLastPageNum {
+            return
+        }
+        
         if isSearchFetching {
             return
         }
@@ -124,6 +173,7 @@ extension SearchResultCollectionViewController {
                     switch self?.currentSearchType {
                     case .Photos:
                         let result = try JSONDecoder().decode(SearchPhotos.self, from: data)
+                        self?.searchLastPageNum = result.totalPages
                         
                         if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
                             self?.items = result.results
@@ -133,6 +183,7 @@ extension SearchResultCollectionViewController {
                         
                     case .Collections:
                         let result = try JSONDecoder().decode(SearchCollections.self, from: data)
+                        self?.searchLastPageNum = result.totalPages
                         
                         if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
                             self?.items = result.results
@@ -142,6 +193,7 @@ extension SearchResultCollectionViewController {
                         
                     case .Users:
                         let result = try JSONDecoder().decode(SearchUsers.self, from: data)
+                        self?.searchLastPageNum = result.totalPages
                         
                         if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
                             self?.items = result.results
@@ -171,6 +223,44 @@ extension SearchResultCollectionViewController {
                 }
                 return
             }
+        }
+    }
+}
+
+extension SearchResultCollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        switch currentSearchType {
+        case .Photos:
+            guard let photo = items[indexPath.row] as? Photo else {
+                return .zero
+            }
+            let cellWidth = collectionView.frame.width
+            let cellHeight = photo.imageRatio * cellWidth
+            return CGSize(width: cellWidth, height: cellHeight)
+            
+        case .Collections:
+            let cellWidth = collectionView.frame.width - 10
+            let cellHeight = cellWidth * 0.7
+            return CGSize(width: cellWidth, height: cellHeight)
+            
+        case .Users:
+            let cellWidth = collectionView.frame.width - 10
+            let cellHeight:CGFloat = 100
+            return CGSize(width: cellWidth, height: cellHeight)
+        }
+    }
+    
+    //여백 설정
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        switch currentSearchType {
+        case .Photos:
+            return UIEdgeInsets(top: 0.5, left: 0, bottom: 0.5, right: 0)
+            
+        case .Collections:
+            return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            
+        case .Users:
+            return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         }
     }
 }

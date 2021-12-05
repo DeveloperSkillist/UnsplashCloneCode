@@ -37,8 +37,8 @@ class UnsplashAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-        dataTask.resume()
+        dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+        dataTask?.resume()
     }
     
     //category 목록 fetch
@@ -58,8 +58,8 @@ class UnsplashAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-        dataTask.resume()
+        dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+        dataTask?.resume()
     }
     
     static func fetchSearchResult(
@@ -85,7 +85,9 @@ class UnsplashAPI {
             var request = URLRequest(url: url)
             request.httpMethod = "GET"
             
-            let dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
-            dataTask.resume()
+            dataTask = URLSession.shared.dataTask(with: url, completionHandler: completionHandler)
+            dataTask?.resume()
         }
+    
+    static var dataTask: URLSessionDataTask?
 }

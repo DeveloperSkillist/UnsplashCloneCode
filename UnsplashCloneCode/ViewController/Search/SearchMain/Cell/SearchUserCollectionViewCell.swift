@@ -14,19 +14,31 @@ class SearchUserCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    private lazy var stackView: UIStackView = {
+        var stackView = UIStackView()
+        stackView.axis = .vertical
+        [
+            titleLabel,
+            subLabel
+        ].forEach {
+            stackView.addArrangedSubview($0)
+        }
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 5
+        return stackView
+    }()
+    
     private lazy var titleLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 13, weight: .bold)
+        label.font = .systemFont(ofSize: 23, weight: .bold)
         label.textColor = .white
-        label.textAlignment = .center
         return label
     }()
     
     private lazy var subLabel: UILabel = {
         var label = UILabel()
-        label.font = .systemFont(ofSize: 13, weight: .bold)
+        label.font = .systemFont(ofSize: 18)
         label.textColor = .white
-        label.textAlignment = .center
         return label
     }()
     
@@ -46,40 +58,55 @@ class SearchUserCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupLayout() {
+    private func setupLayout() {
         [
             imageView,
-            titleLabel,
-            subLabel
+            stackView
         ].forEach {
             addSubview($0)
         }
         
         imageView.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview().inset(10)
+            $0.top.bottom.equalToSuperview().inset(10)
+            $0.leading.equalToSuperview().inset(15)
             $0.width.equalTo(imageView.snp.height)
         }
+        imageView.layer.cornerRadius = 40
+        imageView.clipsToBounds = true
         
-        titleLabel.snp.makeConstraints {
-            $0.top.equalTo(imageView)
-            $0.leading.equalTo(imageView.snp.trailing).offset(10)
-            $0.bottom.equalTo(subLabel.snp.top)
+        stackView.snp.makeConstraints {
+            $0.leading.equalTo(imageView.snp.trailing).offset(15)
+            $0.trailing.equalToSuperview().inset(15)
+            $0.centerY.equalTo(imageView)
         }
         
-        subLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLabel)
-            $0.trailing.equalToSuperview().offset(-10)
-            $0.bottom.equalToSuperview().inset(10)
-        }
+        self.backgroundColor = .darkGray
+        self.clipsToBounds = true
     }
     
-    func setup(user: User) {
+    func firstIndexSetup(user: User) {
+        setup(user: user)
         
+        self.layer.cornerRadius = 20
+        self.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
+    }
+    
+    func middleIndexSetup(user: User) {
+        setup(user: user)
+        
+        self.layer.cornerRadius = 0
+    }
+    
+    func lastIndexSetup(user: User) {
+        setup(user: user)
+        
+        self.layer.cornerRadius = 20
+        self.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+    }
+    
+    private func setup(user: User) {
         imageView.downloadImage(url: user.profileImage.medium)
         titleLabel.text = user.name
         subLabel.text = user.username
-        
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
     }
 }

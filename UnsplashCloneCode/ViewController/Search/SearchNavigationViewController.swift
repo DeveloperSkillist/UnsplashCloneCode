@@ -11,7 +11,9 @@ class SearchNavigationViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBar.tintColor = .white
+//        navigationBar.tintColor = .white
+        
+//        navigationBar.backgroundColor = .red
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
