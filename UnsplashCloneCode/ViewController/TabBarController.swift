@@ -36,8 +36,7 @@ class TabBarController: UITabBarController {
         )
         
         //search Tab
-        let layout = UICollectionViewFlowLayout()
-        let searchViewController = SearchNavigationViewController(rootViewController: SearchMainViewController(collectionViewLayout: layout))
+        let searchViewController = SearchNavigationViewController(rootViewController: SearchMainViewController())
         searchViewController.tabBarItem = UITabBarItem(
             title: "Search",
             image: UIImage(systemName: "magnifyingglass"),

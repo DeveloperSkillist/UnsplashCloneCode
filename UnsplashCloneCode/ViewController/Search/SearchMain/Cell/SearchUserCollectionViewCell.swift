@@ -10,7 +10,7 @@ import UIKit
 class SearchUserCollectionViewCell: UICollectionViewCell {
     private lazy var imageView: DownloadableImageView = {
         var imageView = DownloadableImageView(frame: .zero)
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     

@@ -11,7 +11,6 @@ class SearchCollectionCollectionViewCell: UICollectionViewCell {
     private lazy var imageView: DownloadableImageView = {
         var imageView = DownloadableImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFill
-        
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         return imageView
@@ -62,7 +61,6 @@ class SearchCollectionCollectionViewCell: UICollectionViewCell {
     }
     
     func setup(collection: Collection) {
-        
         imageView.downloadImage(url: collection.coverPhoto.urls.regular)
         label.text = collection.title
     }

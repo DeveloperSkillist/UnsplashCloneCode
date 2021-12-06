@@ -11,12 +11,19 @@ class SearchNavigationViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        navigationBar.tintColor = .white
         
-//        navigationBar.backgroundColor = .red
+        //navigationBar apeearance 설정
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = .black
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        navigationBar.standardAppearance = appearance
+        navigationBar.compactAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
 }
+

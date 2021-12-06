@@ -9,7 +9,7 @@ import UIKit
 
 private let reuseIdentifier = "Cell"
 
-class SearchResultCollectionViewController: UIViewController {
+class SearchResultViewController: UIViewController {
     //메인 사진 목록을 보여줄 CollectionView
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -56,6 +56,8 @@ class SearchResultCollectionViewController: UIViewController {
         collectionView.register(SearchCollectionCollectionViewCell.self, forCellWithReuseIdentifier: "SearchCollectionCollectionViewCell")
         collectionView.register(SearchUserCollectionViewCell.self, forCellWithReuseIdentifier: "SearchUserCollectionViewCell")
         collectionView.prefetchDataSource = self
+        
+//        collectionView.automaticallyAdjustsScrollIndicatorInsets = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +69,7 @@ class SearchResultCollectionViewController: UIViewController {
     }
 }
 
-extension SearchResultCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -84,6 +86,11 @@ extension SearchResultCollectionViewController: UICollectionViewDelegate, UIColl
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoListCollectionViewCell", for: indexPath) as? PhotoListCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            
+            if items.count - 1 < indexPath.row {
+                return UICollectionViewCell()
+            }
+            
             guard let item = items[indexPath.row] as? Photo else {
                 return UICollectionViewCell()
             }
@@ -94,6 +101,11 @@ extension SearchResultCollectionViewController: UICollectionViewDelegate, UIColl
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchCollectionCollectionViewCell", for: indexPath) as? SearchCollectionCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            
+            if items.count - 1 < indexPath.row {
+                return UICollectionViewCell()
+            }
+            
             guard let item = items[indexPath.row] as? Collection else {
                 return UICollectionViewCell()
             }
@@ -106,6 +118,10 @@ extension SearchResultCollectionViewController: UICollectionViewDelegate, UIColl
             }
             
             let row = indexPath.row
+            if items.count - 1 < row {
+                return UICollectionViewCell()
+            }
+            
             guard let item = items[row] as? User else {
                 return UICollectionViewCell()
             }
@@ -122,7 +138,7 @@ extension SearchResultCollectionViewController: UICollectionViewDelegate, UIColl
     }
 }
 
-extension SearchResultCollectionViewController {
+extension SearchResultViewController {
     
     func resetResult() {
         items = []
@@ -227,7 +243,7 @@ extension SearchResultCollectionViewController {
     }
 }
 
-extension SearchResultCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension SearchResultViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch currentSearchType {
         case .Photos:
@@ -244,7 +260,7 @@ extension SearchResultCollectionViewController: UICollectionViewDelegateFlowLayo
             return CGSize(width: cellWidth, height: cellHeight)
             
         case .Users:
-            let cellWidth = collectionView.frame.width - 10
+            let cellWidth = collectionView.frame.width - 20
             let cellHeight:CGFloat = 100
             return CGSize(width: cellWidth, height: cellHeight)
         }
@@ -260,12 +276,12 @@ extension SearchResultCollectionViewController: UICollectionViewDelegateFlowLayo
             return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             
         case .Users:
-            return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            return UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
         }
     }
 }
 
-extension SearchResultCollectionViewController: UICollectionViewDataSourcePrefetching {
+extension SearchResultViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         guard let indexPath = indexPaths.first else {
