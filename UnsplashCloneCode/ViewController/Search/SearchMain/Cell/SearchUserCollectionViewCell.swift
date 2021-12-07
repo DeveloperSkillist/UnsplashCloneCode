@@ -84,6 +84,13 @@ class SearchUserCollectionViewCell: UICollectionViewCell {
         self.clipsToBounds = true
     }
     
+    func onlySingleIndexSetup(user: User) {
+        setup(user: user)
+        
+        self.layer.cornerRadius = 20
+        self.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+    }
+    
     func firstIndexSetup(user: User) {
         setup(user: user)
         

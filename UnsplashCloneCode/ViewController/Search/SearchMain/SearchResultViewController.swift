@@ -7,28 +7,29 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class SearchResultViewController: UIViewController {
     //메인 사진 목록을 보여줄 CollectionView
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 1
         layout.minimumInteritemSpacing = 0
-        layout.invalidateLayout()
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.prefetchDataSource = self
         collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: "PhotoListCollectionViewCell")
+        collectionView.register(SearchCollectionCollectionViewCell.self, forCellWithReuseIdentifier: "SearchCollectionCollectionViewCell")
+        collectionView.register(SearchUserCollectionViewCell.self, forCellWithReuseIdentifier: "SearchUserCollectionViewCell")
         collectionView.backgroundColor = .black
         return collectionView
     }()
     
     var currentSearchType: SearchType = .Photos {
         didSet {
+            //scopeButton을 변경하면, collectionView의 스크롤을 top으로 이동
             collectionView.setContentOffset(.zero, animated: false)
+            //검색
             fetchFirstSearch()
         }
     }
@@ -47,43 +48,31 @@ class SearchResultViewController: UIViewController {
     
     private func setupCollectionView() {
         view.addSubview(collectionView)
+        
         collectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        collectionView.backgroundColor = .black
-        
-        collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: "PhotoListCollectionViewCell")
-        collectionView.register(SearchCollectionCollectionViewCell.self, forCellWithReuseIdentifier: "SearchCollectionCollectionViewCell")
-        collectionView.register(SearchUserCollectionViewCell.self, forCellWithReuseIdentifier: "SearchUserCollectionViewCell")
-        collectionView.prefetchDataSource = self
-        
-//        collectionView.automaticallyAdjustsScrollIndicatorInsets = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-//        view.sizeToFit()
-//        view.setNeedsLayout()
-//        view.layoutIfNeeded()
     }
 }
 
 extension SearchResultViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         switch currentSearchType {
         case .Photos:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoListCollectionViewCell", for: indexPath) as? PhotoListCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "PhotoListCollectionViewCell",
+                for: indexPath
+            ) as? PhotoListCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
@@ -98,7 +87,10 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
             return cell
             
         case .Collections:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchCollectionCollectionViewCell", for: indexPath) as? SearchCollectionCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "SearchCollectionCollectionViewCell",
+                for: indexPath
+            ) as? SearchCollectionCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
@@ -113,7 +105,10 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
             return cell
             
         case .Users:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchUserCollectionViewCell", for: indexPath) as? SearchUserCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "SearchUserCollectionViewCell",
+                for: indexPath
+            ) as? SearchUserCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
@@ -126,7 +121,9 @@ extension SearchResultViewController: UICollectionViewDelegate, UICollectionView
                 return UICollectionViewCell()
             }
             
-            if row == 0 {
+            if items.count == 1 {
+                cell.onlySingleIndexSetup(user: item)
+            } else if row == 0 {
                 cell.firstIndexSetup(user: item)
             } else if row == items.count-1 {
                 cell.lastIndexSetup(user: item)
@@ -146,8 +143,7 @@ extension SearchResultViewController {
     }
     
     func fetchFirstSearch(searchText: String = "") {
-        items.removeAll()
-        collectionView.reloadData()
+        resetResult()
         
         if !searchText.isEmpty {
             self.searchText = searchText
@@ -155,14 +151,12 @@ extension SearchResultViewController {
         UnsplashAPI.dataTask?.cancel()
         isSearchFetching = false
         searchPageNum = 0
-        searchLastPageNum = 0
+        searchLastPageNum = -1
         fetchSearch()
     }
     
     func fetchSearch() {
-        print("searchPageNum : \(searchPageNum + 1)")
-        print("searchLastPageNum : \(searchLastPageNum)")
-        if searchPageNum + 1 == searchLastPageNum {
+        if searchPageNum == searchLastPageNum {
             return
         }
         
@@ -186,44 +180,36 @@ extension SearchResultViewController {
             //response 성공 시, 목록 설정하기
             case (200...299):
                 do {
+                    var results: [Any] = []
                     switch self?.currentSearchType {
                     case .Photos:
                         let result = try JSONDecoder().decode(SearchPhotos.self, from: data)
                         self?.searchLastPageNum = result.totalPages
-                        
-                        if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
-                            self?.items = result.results
-                        } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
-                            self?.items.append(contentsOf: result.results)
-                        }
+                        results = result.results
                         
                     case .Collections:
                         let result = try JSONDecoder().decode(SearchCollections.self, from: data)
                         self?.searchLastPageNum = result.totalPages
-                        
-                        if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
-                            self?.items = result.results
-                        } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
-                            self?.items.append(contentsOf: result.results)
-                        }
+                        results = result.results
                         
                     case .Users:
                         let result = try JSONDecoder().decode(SearchUsers.self, from: data)
                         self?.searchLastPageNum = result.totalPages
-                        
-                        if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
-                            self?.items = result.results
-                        } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
-                            self?.items.append(contentsOf: result.results)
-                        }
+                        results = result.results
                         
                     case .none:
                         return
                     }
                     
+                    if self?.searchPageNum == 0 { //첫페이지를 가져온 경우 목록 설정
+                        self?.items = results
+                    } else { //첫페이지 외 다음페이지를 가져온 경우 목록 설정
+                        self?.items.append(contentsOf: results)
+                    }
+                    
+                    //다음 페이지 번호 설정
+                    self?.searchPageNum += 1
                     DispatchQueue.main.async {
-                        //다음 페이지 번호 설정
-                        self?.searchPageNum += 1
                         self?.collectionView.layoutIfNeeded()
                         self?.collectionView.reloadData()
                     }
