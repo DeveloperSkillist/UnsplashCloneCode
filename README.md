@@ -31,7 +31,7 @@ https://skillist.tistory.com/category/iOS%20%EA%B0%9C%EB%B0%9C/Unsplash%20%ED%81
 <br><br>
 
 # 🗒 OpenSource
-카카오톡 iOS 앱에서 사용중인 오픈소스를 중점으로, 필요하고 스펙이 적합한 오픈소스를 선정했습니다.
+레이아웃 구성을 위한 SnapKit 학습을 위해 SnapKit을 사용하였으며 이외의 오픈소스는 의도적으로 사용하지 않았습니다.
 
 |OpenSource|
 |:---:|
