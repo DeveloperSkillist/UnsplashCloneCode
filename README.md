@@ -8,25 +8,25 @@ https://skillist.tistory.com/category/iOS%20%EA%B0%9C%EB%B0%9C/Unsplash%20%ED%81
 
 |App Launch|
 |:---:|
-|<img src="./ScreenShots/Launch.gif" width="30%"/>|
+|<img src="./ScreenShots/Launch.gif" width="50%"/>|
 
 <br><br>
 
 |Photo Tab|
 |:---:|
-|<img src="./ScreenShots/PhotoTab.gif" width="30%"/>|
+|<img src="./ScreenShots/PhotoTab.gif" width="50%"/>|
 
 <br><br>
 
 |Search Tab|
 |:---:|
-|<img src="./ScreenShots/SearchTab.gif" width="30%"/>|
+|<img src="./ScreenShots/SearchTab.gif" width="50%"/>|
 
 <br><br>
 
 |Account Tab|
 |:---:|
-|<img src="./ScreenShots/AccountTab.gif" width="30%"/>|
+|<img src="./ScreenShots/AccountTab.gif" width="50%"/>|
 
 <br><br>
 
